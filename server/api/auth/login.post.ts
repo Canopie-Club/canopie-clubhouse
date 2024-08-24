@@ -1,5 +1,6 @@
 import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcrypt'
+// TODO: Look at other crypto libraries
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
