@@ -1,0 +1,9 @@
+{
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "logout": "Logout",
+    "home": "Home",
+    "submit": "Submit",
+    "hello": "Hello"
+}

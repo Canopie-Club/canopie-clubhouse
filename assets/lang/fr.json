@@ -1,0 +1,9 @@
+{
+    "email": "Mail",
+    "password": "Mot de passe",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "home": "Accueil",
+    "submit": "Soumettre",
+    "hello": "Bonjour"
+}
