@@ -21,8 +21,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword, password)
     const passwordCorrect = await bcrypt.compare(password, user.password);
+    console.log(hashedPassword, password, passwordCorrect)
 
     if (!passwordCorrect) return {
         success: false,

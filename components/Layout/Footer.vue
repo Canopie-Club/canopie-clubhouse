@@ -15,7 +15,7 @@
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Languages</SelectLabel>
-              <SelectItem v-for="loc in locales" :value="loc.code"> {{loc.name || loc.code}} </SelectItem>
+              <SelectItem v-for="loc in locales" :value="loc.code" :key="loc.code"> {{loc.name || loc.code}} </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
