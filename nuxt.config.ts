@@ -1,39 +1,45 @@
 // import { fileURLToPath } from 'node:url'
 // import { dirname, join } from 'node:path'
-// 
+//
 // const currentDir = dirname(fileURLToPath(import.meta.url))
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2024-04-03',
+  compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "@nuxt/image",
     "@nuxtjs/i18n",
-    "@nuxtjs/mdc"
+    "@nuxtjs/mdc",
   ],
 
+  nitro: {
+    experimental: {
+      openAPI: true,
+    },
+  },
+  
   shadcn: {
-    prefix: '',
+    prefix: "",
     componentDir: "~/components/ui",
   },
 
   i18n: {
     locales: [
       {
-        code: 'en',
-        name: 'English',
-        file: 'assets/lang/en.json'
+        code: "en",
+        name: "English",
+        file: "assets/lang/en.json",
       },
       {
-        code: 'fr',
-        name: 'Français',
-        file: 'assets/lang/fr.json'
-      }
+        code: "fr",
+        name: "Français",
+        file: "assets/lang/fr.json",
+      },
     ],
-    defaultLocale: 'en',
+    defaultLocale: "en",
     // vueI18n: {
     //   messages: {
     //     en: {
@@ -44,7 +50,7 @@ export default defineNuxtConfig({
     //     }
     //   }
     // },
-    strategy: 'no_prefix',
+    strategy: "no_prefix",
   },
 
   // css: [
@@ -58,4 +64,4 @@ export default defineNuxtConfig({
   //     extensions: ['.vue', '.ts'],
   //   },
   // ]
-})
+});
