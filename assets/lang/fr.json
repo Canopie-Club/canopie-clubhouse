@@ -1,5 +1,6 @@
 {
     "email": "Mail",
+    "email-placeholder": "Adresse mail",
     "password": "Mot de passe",
     "login": "Connexion",
     "logout": "Déconnexion",

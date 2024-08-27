@@ -8,9 +8,9 @@
           <!-- <div class="flex flex-col gap-2"> -->
           <FormField v-slot="{ componentField }" name="email">
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{{ $t("email") }}</FormLabel>
               <FormControl>
-                <UiInput placeholder="Email Address" v-bind="componentField" />
+                <UiInput :placeholder="$t('email-placeholder')" v-bind="componentField" />
               </FormControl>
               <!-- <FormDescription>
                 This is your public display name.
@@ -22,15 +22,15 @@
           <!-- <div class="flex flex-col gap-2"> -->
           <FormField v-slot="{ componentField }" name="password">
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{{ $t("password") }}</FormLabel>
               <FormControl>
-                <UiInput v-bind="componentField" type="password" placeholder="Password" />
+                <UiInput v-bind="componentField" type="password" :placeholder="$t('password')" />
               </FormControl>
               <FormMessage />
             </FormItem>
           </FormField>
           <!-- </div> -->
-          <UiButton type="submit">Submit</UiButton>
+          <UiButton type="submit">{{ $t("login") }}</UiButton>
         </div>
       </form>
       <div class="text-red-500 pt-4 text-sm">{{ responseError }}</div>
