@@ -6,19 +6,19 @@
         </Button>
         <h1 class="mb-4">{{ page.title }}</h1>
         <div class="flex flex-col gap-4">
-          <UiInput v-model="pageTitle" />
-          <UiInput v-model="pageRoute" />
-          <Textarea v-model="pageContent" />
-          <Button :disabled="!changesPresent" @click="save">Save</Button>
-          <Button variant="destructive" @click="deletePage">Delete</Button>
+          <UInput v-model="pageTitle" />
+          <UInput v-model="pageRoute" />
+          <UTextarea v-model="pageContent" />
+          <UButton block color="amber" :disabled="!changesPresent" @click="save">Save</UButton>
+          <UButton block color="rose" @click="deletePage">Delete</UButton>
         </div>
       </div>
       <div v-else>
         <div class="flex flex-col gap-4">
-          <UiInput v-model="newPage.title" placeholder="Page Title" />
-          <UiInput v-model="newPage.path" placeholder="Page Route" />
-          <Textarea v-model="newPage.content" placeholder="Page Content" />
-          <Button :disabled="!(newPage.title && newPage.path && newPage.content)" @click="saveNew">Save</Button>
+          <UInput v-model="newPage.title" placeholder="Page Title" />
+          <UInput v-model="newPage.path" placeholder="Page Route" />
+          <UTextarea v-model="newPage.content" placeholder="Page Content" />
+          <UButton :disabled="!(newPage.title && newPage.path && newPage.content)" @click="saveNew">Save</UButton>
         </div>
       </div>
       <div v-if="error">

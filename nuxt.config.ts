@@ -8,11 +8,13 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [
-    "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxtjs/mdc",
+    "@nuxt/ui",
+    "@nuxt/fonts",
+    "@vueuse/nuxt"
   ],
 
   nitro: {
@@ -24,6 +26,11 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: "",
     componentDir: "~/components/ui",
+  },
+
+  ui: {
+    primary: 'amber',
+    gray: 'cool'
   },
 
   i18n: {

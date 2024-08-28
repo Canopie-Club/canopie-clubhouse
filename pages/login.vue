@@ -1,75 +1,55 @@
 <template>
   <div>
     <!-- <form @submit="onSubmit"></form> -->
-    <div class="max-w-md mx-auto">
-      <!-- <Form> -->
-      <form :validation-schema="formSchema" @submit="onSubmit">
-        <div class="flex flex-col gap-6">
-          <!-- <div class="flex flex-col gap-2"> -->
-          <FormField v-slot="{ componentField }" name="email">
-            <FormItem>
-              <FormLabel>{{ $t("email") }}</FormLabel>
-              <FormControl>
-                <UiInput :placeholder="$t('email-placeholder')" v-bind="componentField" />
-              </FormControl>
-              <!-- <FormDescription>
-                This is your public display name.
-              </FormDescription> -->
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <!-- </div> -->
-          <!-- <div class="flex flex-col gap-2"> -->
-          <FormField v-slot="{ componentField }" name="password">
-            <FormItem>
-              <FormLabel>{{ $t("password") }}</FormLabel>
-              <FormControl>
-                <UiInput v-bind="componentField" type="password" :placeholder="$t('password')" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-          <!-- </div> -->
-          <UiButton type="submit">{{ $t("login") }}</UiButton>
-        </div>
-      </form>
+    <div class="max-w-md mx-auto mt-10 border border-gray-200 p-4 rounded-md">
+      <h1 class="text-2xl font-bold text-left mb-4">Login</h1>
+
+      <UForm
+        :schema="schema"
+        :state="state"
+        class="space-y-4"
+        @submit="onSubmit"
+      >
+        <UFormGroup label="Email" name="email">
+          <UInput v-model="state.email" />
+        </UFormGroup>
+
+        <UFormGroup label="Password" name="password">
+          <UInput v-model="state.password" type="password" />
+        </UFormGroup>
+
+        <UButton color="amber" block type="submit"> Submit </UButton>
+      </UForm>
       <div class="text-red-500 pt-4 text-sm">{{ responseError }}</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-import { useForm } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/zod";
 import * as z from "zod";
+import type { FormSubmitEvent } from "#ui/types";
+import type { Role } from "@canopie-club/prisma-client";
 
 const user = useUser();
 const sessionKey = useSessionKey();
 
-const formSchema = toTypedSchema(
-  z.object({
-    email: z.string().email().min(2).max(50),
-    password: z.string().min(8),
-  })
-);
+const schema = z.object({
+  email: z.string().email("Invalid email").min(2).max(50),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
 
-const form = useForm({
-  validationSchema: formSchema,
+type Schema = z.output<typeof schema>;
+
+const state = reactive({
+  email: undefined,
+  password: undefined,
 });
 
 const responseError = ref<string | null>(null);
 
-const onSubmit = form.handleSubmit(async (values) => {
-  const { email, password } = values;
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  // Do something with data
+  const { email, password } = event.data;
 
   const result = await $fetch("/api/auth/login", {
     method: "POST",
@@ -94,12 +74,13 @@ const onSubmit = form.handleSubmit(async (values) => {
   sessionKey.value = result.session.id;
   user.value = {
     ...result.user,
+    role: result.user.role as Role,
     createdAt: new Date(result.user.createdAt),
-    updatedAt: new Date(result.user.updatedAt)
+    updatedAt: new Date(result.user.updatedAt),
   };
 
   await navigateTo("/");
-});
+}
 
 onMounted(() => {
   if (user.value) {
