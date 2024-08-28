@@ -1,28 +1,29 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
-
-const prisma = new PrismaClient()
+import { v4 as uuidv4 } from "uuid";
 
 export default defineEventHandler(async (event) => {
-    const userId = "250fd11a-e7f6-4a21-9373-e97e7a4e883c";
+  const userId = "250fd11a-e7f6-4a21-9373-e97e7a4e883c";
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: userId
-        }
+  const [user] = await useDrizzle()
+    .select()
+    .from(tables.users)
+    .where(eq(tables.users.id, userId))
+    .limit(1);
+
+  // Expires in 1 hour
+  const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
+  const [session] = await useDrizzle()
+    .insert(tables.userSessions)
+    .values({
+      id: uuidv4(),
+      userId: user.id,
+      expiresAt,
     })
+    .returning();
 
-    const newPassword = '8.M@gg1e.canopie'
-    const passwordHash = await bcrypt.hash(newPassword, 10)
-    
-    await prisma.user.update({
-        where: {
-            id: userId
-        },
-        data: {
-            password: passwordHash
-        }
-    })
-
-    return user
-})
+  return {
+    success: true,
+    message: "Got user",
+    session,
+    user,
+  };
+});

@@ -8,22 +8,30 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [
-    "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxtjs/mdc",
+    "@nuxthub/core",
+    "@nuxt/ui",
+    "@nuxt/fonts",
+    "@vueuse/nuxt"
   ],
 
   nitro: {
     experimental: {
       openAPI: true,
+      tasks: true
     },
   },
-  
+
   shadcn: {
     prefix: "",
     componentDir: "~/components/ui",
+  },
+
+  hub: {
+    database: true
   },
 
   i18n: {

@@ -1,7 +1,4 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
-
-const prisma = new PrismaClient()
+import { v4 as uuidv4 } from 'uuid'
 
 export default defineEventHandler(async (event) => {
     const authHeader = getRequestHeader(event, 'Authorization') || ''
@@ -9,50 +6,31 @@ export default defineEventHandler(async (event) => {
     const sessionId = authHeader.split(' ')[1]
     const siteId = getRouterParam(event, 'siteId')
 
-    const sites = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        include: {
-                            site: true
-                        }
-                    }
-                }
-            }
-        }
-    })
 
-    if (!sites) {
-        throw new Error('User not found')
+    if (!siteId) {
+        throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
     }
 
-    if (!sites.user.sites.some(site => site.siteId === siteId)) {
-        throw new Error('User not in site')
+    const site = await userSite(sessionId, siteId)
+
+    if (!site.success) {
+        throw createError({statusCode: 401, statusMessage: site.message})
     }
 
     if (!pageBody.title || !pageBody.path || !pageBody.content) {
-        throw new Error('Missing required fields')
+        throw createError({statusCode: 400, statusMessage: 'Missing required fields'})
     }
 
-    if (!siteId) {
-        throw new Error('Site not found')
-    }
-    
-    const page = await prisma.page.create({
-        data: {
-            siteId: siteId,
-            title: pageBody.title,
-            path: pageBody.path,
-            content: pageBody.content,
-        }
-    })
+    const [page] = await useDrizzle().insert(tables.pages).values({
+        id: uuidv4(),
+        siteId: siteId,
+        title: pageBody.title,
+        path: pageBody.path,
+        content: pageBody.content,
+    }).returning()
 
     if (!page) {
-        throw new Error('Page not created')
+        throw createError({statusCode: 500, statusMessage: 'Page not created'})
     }
 
     return page

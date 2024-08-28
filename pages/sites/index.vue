@@ -3,7 +3,7 @@
       <h1>Sites</h1>
       <div class="sites grid gap-2 py-4">
       <template v-for="site in sites">
-          <h2><a :href="`/sites/${site.site.id}`">{{ site.site.name }}</a></h2>
+          <h2><a :href="`/sites/${site.id}`">{{ site.name }}</a></h2>
         </template>
       </div>
     </div>

@@ -1,50 +1,30 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
-
-const prisma = new PrismaClient()
-
 export default defineEventHandler(async (event) => {
     const authHeader = getRequestHeader(event, 'Authorization') || ''
     const sessionId = authHeader.split(' ')[1]
     const siteId = getRouterParam(event, 'siteId')
     const pageId = getRouterParam(event, 'pageId')
 
-    console.log(sessionId)
-
-    const sites = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        include: {
-                            site: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-
-    if (!sites) {
-        throw new Error('User not found')
+    if (!pageId) {
+        throw createError({statusCode: 400, statusMessage: 'Page ID is required'})
     }
 
-    if (!sites.user.sites.some(site => site.siteId === siteId)) {
-        throw new Error('User not in site')
+    if (!siteId) {
+        throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
     }
 
-    const page = await prisma.page.delete({
-        where: {
-            id: pageId,
-        },
-    })
+    const site = await userSite(sessionId, siteId, pageId)
+
+    if (!site.success) {
+        throw createError({statusCode: 401, statusMessage: site.message})
+    }
+
+    const page = site.sites?.flatMap(site => site.pages).find(page => page.id === pageId)
 
     if (!page) {
-        throw new Error('Site not found')
+        throw createError({statusCode: 404, statusMessage: 'Page not found'})
     }
+
+    await useDrizzle().delete(tables.pages).where(eq(tables.pages.id, pageId))
 
     return page
 })

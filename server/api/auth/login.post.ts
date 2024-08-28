@@ -1,17 +1,13 @@
+import { v4 as uuidv4 } from 'uuid'
 import { PrismaClient } from '@canopie-club/prisma-client'
 // TODO: Look at other crypto libraries
 import bcrypt from 'bcryptjs'
 
-const prisma = new PrismaClient()
-
 export default defineEventHandler(async (event) => {
     const {email, password} = await readBody(event)
 
-    const user = await prisma.user.findUnique({
-        where: {
-            email,
-        }
-    })
+    // const users = await useDrizzle().select().from(tables.users).where(eq(tables.users.email, email)).limit(1)
+    const [user] = await useDrizzle().select().from(tables.users).where(eq(tables.users.email, email)).limit(1)
 
     if (!user) return {
         success: false,
@@ -34,12 +30,11 @@ export default defineEventHandler(async (event) => {
     // Expires in 1 hour
     const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000)
 
-    const session = await prisma.userSession.create({
-        data: {
-            userId: user.id,
-            expiresAt
-        }
-    })
+    const [session] = await useDrizzle().insert(tables.userSessions).values({
+        id: uuidv4(),
+        userId: user.id,
+        expiresAt
+    }).returning()
 
     return {
         success: true,
