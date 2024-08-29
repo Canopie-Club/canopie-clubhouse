@@ -1,16 +1,12 @@
 <template>
   <div class="header-container relative">
     <div class="header-bar" :class="[user ? 'logged-in' : 'anon']">
-      <div>
-        {{ user?.name }}<span v-if="!user" style="opacity: 0">FISH</span>
-      </div>
+      <div>{{ user?.name }}<span v-if="!user" style="opacity: 0">FISH</span></div>
 
       <div class="flex gap-4">
         <template v-for="link in menuLinks" :key="link.path">
           <template v-if="'action' in link">
-            <a class="cursor-pointer" @click="link.action">{{
-              $t(link.name)
-            }}</a>
+            <a class="cursor-pointer" @click="link.action">{{ $t(link.name) }}</a>
           </template>
           <template v-else>
             <NuxtLink :to="link.path" :class="{ active: link.active }">{{
@@ -56,7 +52,7 @@ const menuLinks = computed((): (MenuLink | MenuAction)[] => {
         {
           name: "sites",
           path: "/sites",
-          active: route.path === "/sites",
+          active: route.path.startsWith("/sites"),
         },
         {
           name: "logout",
@@ -89,8 +85,16 @@ const menuLinks = computed((): (MenuLink | MenuAction)[] => {
   @apply bg-white bg-opacity-95 border-b-2 border-gray-100;
   @apply px-4 py-2;
 
-//   &.anon {
-//     @apply border-indigo-100;
-//   }
+  //   &.anon {
+  //     @apply border-amber-100;
+  //   }
+
+  a {
+    @apply px-2 py-1 rounded-md;
+
+    &.active {
+      @apply text-amber-700 bg-amber-100;
+    }
+  }
 }
 </style>

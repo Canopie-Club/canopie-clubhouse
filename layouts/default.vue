@@ -21,7 +21,7 @@
   margin: 0 auto;
 
   h1 {
-    @apply text-2xl font-bold text-indigo-800;
+    @apply text-2xl font-bold text-amber-800;
   }
 
   p {
@@ -29,14 +29,10 @@
   }
 
   a {
-    @apply text-indigo-500;
+    @apply text-amber-500;
 
     &:hover {
-      @apply text-indigo-700;
-    }
-
-    &.active {
-      @apply text-emerald-700;
+      @apply text-amber-700;
     }
   }
 

@@ -18,7 +18,7 @@
           <UInput v-model="state.password" type="password" />
         </UFormGroup>
 
-        <UButton block type="submit"> Submit </UButton>
+        <UButton color="amber" block type="submit"> Submit </UButton>
       </UForm>
       <div class="text-red-500 pt-4 text-sm">{{ responseError }}</div>
     </div>

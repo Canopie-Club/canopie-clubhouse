@@ -10,8 +10,8 @@ export default defineEventHandler(async (event) => {
     .limit(1)
     .innerJoin(tables.users, eq(tables.userSessions.userId, tables.users.id));
 
+  console.timeEnd("verify-session");
   if (!session) {
-    console.timeEnd("verify-session");
     return {
       success: false,
       message: "Session expired or not found",
@@ -30,7 +30,6 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  console.timeEnd("verify-session");
   return {
     success: true,
     message: "Got user",

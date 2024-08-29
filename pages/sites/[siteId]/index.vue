@@ -14,7 +14,7 @@
         ></USelectMenu>
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           <a
-            class="bg-indigo-100 rounded hover:bg-indigo-200 p-4"
+            class="bg-amber-100 rounded hover:bg-amber-200 p-4"
             v-for="page in site.pages"
             :key="page.id"
             :href="`/sites/${siteId}/pages/${page.id}`"
@@ -22,13 +22,13 @@
             {{ page.title }}
           </a>
           <a
-            class="bg-violet-100 rounded hover:bg-violet-200 text-violet-800 p-4"
+            class="bg-orange-100 rounded hover:bg-orange-200 text-orange-800 p-4"
             :href="`/sites/${siteId}/pages/new`"
           >
             + Add Page
           </a>
         </div>
-        <UButton block :disabled="!changesPresent" @click="save">Save</UButton>
+        <UButton block color="amber" :disabled="!changesPresent" @click="save">Save</UButton>
       </div>
     </div>
     <div v-if="error">
@@ -43,7 +43,6 @@
 
 <script setup lang="ts">
 import compare from "just-compare";
-import { Button } from "@/components/ui/button";
 
 const templates = [
   {
