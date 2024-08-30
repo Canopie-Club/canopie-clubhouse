@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
-import type { BackupData } from '~/assets/types/db';
 import type { Data } from '~/assets/types/prisma-data';
+import type { BackupData } from '~/assets/types/db';
 
 /**
  * Database Seeding Task for NuxtHub Dev Environment
@@ -21,11 +21,11 @@ import type { Data } from '~/assets/types/prisma-data';
 
 export default defineTask({
   meta: {
-    name: "db:seed",
-    description: "Run database seed task",
+    name: "db:replace",
+    description: "Replace database with backup",
   },
   async run() {
-    console.log("Running DB seed sites task...");
+    console.log("Running DB replace task...");
 
     const dataLocation = process.env.SEED_DATA_LOCATION;
 
@@ -41,7 +41,7 @@ export default defineTask({
       readFileSync(dataLocation, "utf-8")
     ) as Data | BackupData | null;
 
-    if (!data) {
+    if (!data || !('sites' in data)) {
       console.error("No data found in sites.json");
       return {
         result: "error",
@@ -84,7 +84,17 @@ export default defineTask({
         expiresAt: new Date(userSession.expiresAt),
       })),
     };
-    
+
+    // Delete all existing data
+    await useDrizzle().delete(tables.userSessions).returning();
+    await useDrizzle().delete(tables.routeRecords).returning();
+    await useDrizzle().delete(tables.siteUsers).returning();
+    await useDrizzle().delete(tables.users).returning();
+    await useDrizzle().delete(tables.userRoles).returning();
+    await useDrizzle().delete(tables.pages).returning();
+    await useDrizzle().delete(tables.sites).returning();
+
+    // Insert new data
     const sites = await useDrizzle().insert(tables.sites).values(data.sites).returning();
     const pages = await useDrizzle().insert(tables.pages).values(data.pages).returning();
     const routeRecords = await useDrizzle().insert(tables.routeRecords).values(data.routeRecords).returning();

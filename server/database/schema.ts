@@ -39,6 +39,7 @@ export const sites = sqliteTable('sites', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().default(sql`CURRENT_TIMESTAMP`),
   template: text('template').notNull(),
   name: text('name'),
+  active: integer('active').notNull().default(1),
 });
 
 export const siteUsers = sqliteTable('site_users', {
