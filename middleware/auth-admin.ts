@@ -1,4 +1,4 @@
-import type { Role } from "@canopie-club/prisma-client";
+import type { RoleType } from '~/assets/types/db';
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const sessionKey = useSessionKey();
@@ -25,7 +25,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
         if (result.user) user.value = {
             ...result.user,
-            role: result.user.role as Role,
+            role: result.user.role as RoleType,
             createdAt: new Date(result.user.createdAt),
             updatedAt: new Date(result.user.updatedAt)
         }

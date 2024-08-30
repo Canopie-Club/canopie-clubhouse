@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import * as z from "zod";
 import type { FormSubmitEvent } from "#ui/types";
-import type { Role } from "@canopie-club/prisma-client";
+import type { RoleType } from "~/assets/types/db";
 
 const user = useUser();
 const sessionKey = useSessionKey();
@@ -74,7 +74,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
   sessionKey.value = result.session.id;
   user.value = {
     ...result.user,
-    role: result.user.role as Role,
+    role: result.user.role as RoleType,
     createdAt: new Date(result.user.createdAt),
     updatedAt: new Date(result.user.updatedAt),
   };

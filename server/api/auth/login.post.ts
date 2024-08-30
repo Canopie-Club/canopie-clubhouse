@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid'
-import { PrismaClient } from '@canopie-club/prisma-client'
 // TODO: Look at other crypto libraries
 import bcrypt from 'bcryptjs'
 

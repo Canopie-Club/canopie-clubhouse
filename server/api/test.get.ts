@@ -1,9 +1,5 @@
-import { PrismaClient } from "@canopie-club/prisma-client";
-
-const prisma = new PrismaClient();
-
 export default defineEventHandler(async () => {
-    const users = await prisma.user.findMany();
+  const users = await useDrizzle().select().from(tables.users)
 
   return {
     users,

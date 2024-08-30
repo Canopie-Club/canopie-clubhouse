@@ -9,6 +9,13 @@ export default defineEventHandler(async (event) => {
     .where(eq(tables.users.id, userId))
     .limit(1);
 
+  if (!user) {
+    return {
+      success: false,
+      message: "User not found",
+    };
+  }
+
   // Expires in 1 hour
   const expiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000);
   const [session] = await useDrizzle()

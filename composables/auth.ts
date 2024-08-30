@@ -1,4 +1,4 @@
-import type { User } from '@canopie-club/prisma-client';
+import type { User } from '~/assets/types/db';
 
 export const useUser = () => useState<User | null>('auth-user', () => null);
 export const useSessionKey = (expires?: Date) => useCookie<string>('@canopie-club/session-key', {expires});
