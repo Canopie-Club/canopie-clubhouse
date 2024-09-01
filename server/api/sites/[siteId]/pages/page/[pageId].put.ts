@@ -28,7 +28,14 @@ export default defineEventHandler(async (event) => {
     delete pageBody.users;
     delete pageBody.pages;
 
-    const [updatedPage] = await useDrizzle().update(tables.pages).set(pageBody).where(eq(tables.pages.id, pageId)).returning()
+    const [updatedPage] = await useDrizzle().update(tables.pages).set({
+        id: pageBody.id,
+        title: pageBody.title,
+        path: pageBody.path,
+        content: pageBody.content,
+        createdAt: new Date(pageBody.createdAt),
+        updatedAt: new Date(),
+    }).where(eq(tables.pages.id, pageId)).returning()
     
     return updatedPage
 })

@@ -8,7 +8,6 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [
-    "shadcn-nuxt",
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxtjs/mdc",
@@ -23,11 +22,6 @@ export default defineNuxtConfig({
       openAPI: true,
       tasks: true
     },
-  },
-
-  shadcn: {
-    prefix: "",
-    componentDir: "~/components/ui",
   },
 
   hub: {

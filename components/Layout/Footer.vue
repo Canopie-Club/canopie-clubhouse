@@ -42,15 +42,6 @@
 <script setup lang="ts">
 const user = useUser();
 const { locale, setLocale, locales } = useI18n();
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const language = computed({
   get: () => locale.value,
