@@ -1,16 +1,18 @@
+import { getSessionId } from '../../utils/session'
+
 export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
+    const sessionId = getSessionId(event)
     const siteBody = await readBody(event)
-    const sessionId = authHeader.split(' ')[1]
     const siteId = getRouterParam(event, 'siteId')
 
     if (!siteId) {
         throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
     }
 
-    const site = await userSite(sessionId, siteId)
-    if (!site.success) {
-        throw createError({statusCode: 401, statusMessage: site.message})
+    const [site] = await userSite(sessionId, siteId)
+
+    if (!site) {
+        throw createError({statusCode: 401, statusMessage: 'Site not found'})
     }
 
     delete siteBody.pages

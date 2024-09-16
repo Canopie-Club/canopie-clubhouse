@@ -1,21 +1,28 @@
+import { SiteExtraType } from '~/assets/types/db'
+import { getSessionId } from '../../utils/session'
+
 export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const sessionId = authHeader.split(' ')[1]
+    const sessionId = getSessionId(event)
     const siteId = getRouterParam(event, 'siteId')
 
     if (!siteId) {
-        throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
+        throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
     }
 
-    const site = await userSite(sessionId, siteId)
+    const [site] = await userSite(sessionId, siteId)
 
-    if (!site.success) {
-        throw createError({statusCode: 401, statusMessage: site.message})
+    if (!site) {
+        throw createError({ statusCode: 401, statusMessage: 'Site not found' })
     }
 
-    if (!site.sites || site.sites.length === 0) {
-        throw createError({statusCode: 404, statusMessage: 'Site not found'})
+    const extras: SiteExtraType[] = (await useDrizzle().select({ extra: tables.siteExtras.extra })
+        .from(tables.siteExtras)
+        .where(eq(tables.siteExtras.siteId, site.id))).map(({ extra }) => extra as SiteExtraType)
+
+    const result = {
+        ...site,
+        extras: extras.filter((extra) => extra !== null),
     }
-    
-    return site.sites[0]
+
+    return result
 })

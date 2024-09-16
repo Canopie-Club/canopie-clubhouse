@@ -1,6 +1,7 @@
+import { getSessionId } from '~/server/api/utils/session'
+
 export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const sessionId = authHeader.split(' ')[1]
+    const sessionId = getSessionId(event)
     const siteId = getRouterParam(event, 'siteId')
     const pageId = getRouterParam(event, 'pageId')
 
@@ -12,13 +13,15 @@ export default defineEventHandler(async (event) => {
         throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
     }
 
-    const site = await userSite(sessionId, siteId, pageId)
+    const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
 
-    if (!site.success) {
-        throw createError({statusCode: 401, statusMessage: site.message})
+    if (!result.success) {
+        throw createError({statusCode: 401, statusMessage: result.message})
     }
 
-    const page = site.sites?.flatMap(site => site.pages).find(page => page.id === pageId)
+    const sites = result.data
+
+    const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
 
     if (!page) {
         throw createError({statusCode: 404, statusMessage: 'Page not found'})

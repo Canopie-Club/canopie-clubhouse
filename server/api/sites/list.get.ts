@@ -1,7 +1,8 @@
+import { getSessionId } from '../utils/session'
+
 export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const sessionId = authHeader.split(' ')[1]
-    const {success, message, sites} = await userSite(sessionId)
+    const sessionId = getSessionId(event)
+    const {success, message, data: sites} = await successCatcher(async () => await userSite(sessionId))
 
     if (!success) {
         throw createError({statusCode: 401, statusMessage: message})

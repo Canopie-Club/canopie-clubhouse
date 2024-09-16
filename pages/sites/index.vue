@@ -10,26 +10,9 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  middleware: ["auth-admin"],
-});
-
-const sessionId = useSessionKey();
-
-const { data: sites } = await useFetch('/api/sites/list', {
-  // headers: useRequestHeaders(['authorization'])
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${sessionId.value}`
-  },
-})
+const { data: sites } = await useFetch('/api/sites/list', headers())
 
 onMounted(() => {
   console.log(sites.value)
 })
-
 </script>
-
-<style lang="scss" scoped>
-
-</style>

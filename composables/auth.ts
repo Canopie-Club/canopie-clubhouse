@@ -1,7 +1,8 @@
-import type { User } from '~/assets/types/db';
+import type { SiteSummary, User } from '~/assets/types/db';
 
 export const useUser = () => useState<User | null>('auth-user', () => null);
-export const useSessionKey = (expires?: Date) => useCookie<string>('@canopie-club/session-key', {expires});
+export const useSites = () => useState<SiteSummary[] | null>('auth-sites', () => null);
+export const useSessionKey = (expires?: Date) => useCookie<string>('@canopie-club/session-key', { expires });
 export const useLogout = () => {
     const logout = () => {
         const user = useUser();

@@ -1,16 +1,90 @@
 <template>
-  <div class="template default">
+  <!-- <div class="template default"> -->
+  <!-- 
     <LayoutHeader />
-    <div class="template-content grid min-h-[calc(100vh-5rem)]">
-      <UContainer class="w-full">
-        <slot></slot>
+    <UMain>
+      <UPage>
+        <slot />
+      </UPage>
+    </UMain>
+    <LayoutFooter /> 
+    -->
+  <div>
+    <LayoutHeader />
+    <UMain>
+      <UContainer>
+        <UPage>
+          <template #left>
+            <UAside>
+              <!-- <BranchSelect /> -->
+
+              <UNavigationTree :links="navigation" />
+            </UAside>
+          </template>
+
+          <slot />
+        </UPage>
       </UContainer>
-      <LayoutFooter />
-    </div>
+    </UMain>
+    <LayoutFooter />
   </div>
+  <!-- </div> -->
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import type { NavigationTree } from "@nuxt/ui-pro/types";
+import type { SiteSummary, SiteType } from "~/assets/types/db";
+
+const appUrl = useRuntimeConfig().app.url;
+const appConfig = useAppConfig();
+const sites = useSites();
+const route = useRoute();
+const navigation = useNavigation();
+
+useSeoMeta({
+  ogImage: `${appUrl}/images/og.png`,
+  twitterImage: `${appUrl}/images/og.png`,
+  twitterCard: "summary_large_image",
+});
+
+// const navigation = computed((): NavigationTree[] => {
+//   return [
+//     ...(sites.value || []).map(
+//       (site) =>
+//         ({
+//           id: site.id,
+//           label: site.name,
+//           icon: "i-heroicons-map",
+//           to: `/sites/${site.id}`,
+//           children: childrenForSiteType(site),
+//         } as NavigationTree)
+//     ),
+//     {
+//       label: "Account",
+//       icon: "i-heroicons-user-circle",
+//       to: "/account",
+//       children: [
+//         {
+//           label: "Profile",
+//           icon: "i-heroicons-user",
+//           to: "/account/profile",
+//         },
+//         {
+//           label: "Settings",
+//           icon: "i-heroicons-cog",
+//           to: "/account/settings",
+//         },
+//       ],
+//     },
+//   ];
+// });
+
+onBeforeMount(() => {
+  // TODO: Figure out how to properly set this in the config
+  if (appConfig.ui.primary !== "amber") appConfig.ui.primary = "amber";
+  if (appConfig.ui.gray !== "stone") appConfig.ui.gray = "stone";
+});
+</script>
 
 <style lang="scss">
 .template {
@@ -18,7 +92,7 @@
   line-height: 1.6;
   color: #333;
   // max-width: 800px;
-  margin: 0 auto;
+  // margin: 0 auto;
 
   h1 {
     @apply text-2xl font-bold text-amber-800;

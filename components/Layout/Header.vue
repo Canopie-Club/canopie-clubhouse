@@ -1,70 +1,47 @@
 <template>
-  <div class="header-container relative">
-    <div class="header-bar" :class="[user ? 'logged-in' : 'anon']">
-      <div>{{ user?.name }}<span v-if="!user" style="opacity: 0">FISH</span></div>
-
-      <div class="flex gap-4">
-        <template v-for="link in menuLinks" :key="link.path">
-          <template v-if="'action' in link">
-            <a class="cursor-pointer" @click="link.action">{{ $t(link.name) }}</a>
-          </template>
-          <template v-else>
-            <NuxtLink :to="link.path" :class="{ active: link.active }">{{
-              $t(link.name)
-            }}</NuxtLink>
-          </template>
-        </template>
-      </div>
-    </div>
-    <div class="header-spacer"></div>
-  </div>
+  <UHeader :links="menuLinks">
+    <template #logo>
+      <Logo class="w-auto h-6" />
+    </template>
+    <template #right>
+      <UColorModeButton />
+      <!-- <UButton to="https://github.com/nuxt/ui" target="_blank" icon="i-simple-icons-github" color="gray" variant="ghost" /> -->
+    </template>
+  </UHeader>
 </template>
 
 <script setup lang="ts">
+import type { HeaderLink, HeaderPopoverLink } from "@nuxt/ui-pro/types";
+const { t } = useI18n();
+
 const user = useUser();
 const route = useRoute();
 const logout = useLogout();
 
-interface MenuLink {
-  name: string;
-  path: string;
-  active: boolean;
-}
-
-interface MenuAction {
-  name: string;
-  path: string;
-  action: () => void;
-}
-
-const menuLinks = computed((): (MenuLink | MenuAction)[] => {
-  const links: (MenuLink | MenuAction)[] = [
-    {
-      name: "home",
-      path: "/",
-      active: route.path === "/",
-    },
-  ];
+const menuLinks = computed(() => {
+  const links: (HeaderLink | HeaderPopoverLink)[] = [];
 
   if (user.value) {
     links.push(
       ...[
         {
-          name: "sites",
-          path: "/sites",
+          label: t("sites"),
+          icon: "i-heroicons-book-open",
+          to: "/sites",
           active: route.path.startsWith("/sites"),
         },
         {
-          name: "logout",
-          path: "/logout",
-          action: logout,
+          label: t("logout"),
+          icon: "i-heroicons-arrow-left-start-on-rectangle-solid",
+          click: logout,
         },
       ]
     );
   } else {
     links.push({
-      name: "login",
-      path: "/login",
+      label: t("login"),
+      to: "/login",
+      icon: "i-heroicons-arrow-left-end-on-rectangle-solid",
       active: route.path === "/login",
     });
   }

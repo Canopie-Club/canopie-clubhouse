@@ -1,7 +1,8 @@
+import { getSessionId } from '~/server/api/utils/session'
+
 export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
+    const sessionId = getSessionId(event)
     const pageBody = await readBody(event)
-    const sessionId = authHeader.split(' ')[1]
     const siteId = getRouterParam(event, 'siteId')
     const pageId = getRouterParam(event, 'pageId')
 
@@ -13,13 +14,15 @@ export default defineEventHandler(async (event) => {
         throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
     }
 
-    const site = await userSite(sessionId, siteId, pageId)
+    const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
 
-    if (!site.success) {
-        throw createError({statusCode: 401, statusMessage: site.message})
+    if (!result.success) {
+        throw createError({statusCode: 401, statusMessage: result.message})
     }
 
-    const page = site.sites?.flatMap(site => site.pages).find(page => page.id === pageId)
+    const sites = result.data
+
+    const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
 
     if (!page) {
         throw createError({statusCode: 404, statusMessage: 'Page not found'})
@@ -31,7 +34,7 @@ export default defineEventHandler(async (event) => {
     const [updatedPage] = await useDrizzle().update(tables.pages).set({
         id: pageBody.id,
         title: pageBody.title,
-        path: pageBody.path,
+        slug: pageBody.path,
         content: pageBody.content,
         createdAt: new Date(pageBody.createdAt),
         updatedAt: new Date(),

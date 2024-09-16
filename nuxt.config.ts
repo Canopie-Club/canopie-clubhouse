@@ -7,15 +7,30 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
+  extends: [
+    "@nuxt/ui-pro"
+  ],
   modules: [
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxtjs/mdc",
-    "@nuxthub/core",
+    // "@nuxthub/core",
+    "@canopie-club/toolbox",
     "@nuxt/ui",
     "@nuxt/fonts",
     "@vueuse/nuxt"
   ],
+
+  ui: {
+    // global: true
+    // @ts-expect-error
+    primary: 'amber',
+    safelistColors: ['amber', 'stone']
+  },
+
+  uiPro: {
+    
+  },
 
   nitro: {
     experimental: {
@@ -25,7 +40,8 @@ export default defineNuxtConfig({
   },
 
   hub: {
-    database: true
+    database: true,
+    blob: true
   },
 
   i18n: {

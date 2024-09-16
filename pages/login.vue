@@ -30,7 +30,12 @@ import * as z from "zod";
 import type { FormSubmitEvent } from "#ui/types";
 import type { RoleType } from "~/assets/types/db";
 
+definePageMeta({
+  layout: "login",
+});
+
 const user = useUser();
+const sites = useSites();
 const sessionKey = useSessionKey();
 
 const schema = z.object({
@@ -79,7 +84,11 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     updatedAt: new Date(result.user.updatedAt),
   };
 
-  await navigateTo("/");
+  sites.value = result.sites;
+
+  const redirect = useRoute().query.redirect as string;
+
+  await navigateTo(redirect || "/");
 }
 
 onMounted(() => {
