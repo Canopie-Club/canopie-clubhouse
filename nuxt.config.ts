@@ -18,7 +18,8 @@ export default defineNuxtConfig({
     "@canopie-club/toolbox",
     "@nuxt/ui",
     "@nuxt/fonts",
-    "@vueuse/nuxt"
+    "@vueuse/nuxt",
+    "shadcn-nuxt"
   ],
 
   ui: {
@@ -29,7 +30,7 @@ export default defineNuxtConfig({
   },
 
   uiPro: {
-    
+
   },
 
   nitro: {
