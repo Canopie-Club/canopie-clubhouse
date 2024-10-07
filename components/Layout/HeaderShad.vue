@@ -1,62 +1,91 @@
+<template>
+  <div>
+    <HeaderShadTop ref="headerShadTop" :navMenu="props.navMenu" @open-sheet="isOpen = true">
+      <template #left>
+        <Button variant="ghost" size="icon" class="md:hidden" @click="isOpen = true">
+          <MenuIcon class="h-6 w-6" />
+          <span class="sr-only">Open sidebar</span>
+        </Button>
+
+          <NavLink to="/">
+           <Logo class="h-6 w-auto cursor-pointer" />
+         </NavLink>
+        <!-- <Button variant="ghost">Sites</Button>
+        <Button variant="ghost">Logout</Button> -->
+      </template>
+    </HeaderShadTop>
+
+    <div class="bottom flex h-full dark:bg-gray-900">
+      <!-- <div class="h-screen"> -->
+      <aside v-if="props.navMenu" class="aside">
+        <HeaderShadInner :navMenu="props.navMenu" />
+      </aside>
+
+      <Sheet v-if="props.navMenu" v-model:open="isOpen">
+        <SheetContent side="left" class="w-[300px] sm:w-[400px]">
+          <HeaderShadInner :navMenu="props.navMenu" />
+        </SheetContent>
+      </Sheet>
+      <!-- </div> -->
+
+      <main class="flex-1 overflow-y-auto">
+        <slot name="content" />
+      </main>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, type ComponentPublicInstance } from "vue";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { HomeIcon, MenuIcon } from "lucide-vue-next";
-import NavItem from "./NavItem.vue";
 import HeaderShadInner from "./HeaderShadInner.vue";
 import HeaderShadTop from "./HeaderShadTop.vue";
+import { useElementBounding } from "@vueuse/core";
 
-interface NavItem {
-  name: string;
-  href: string;
-  icon: any;
-  current?: boolean;
-  children?: NavItem[];
-}
+const headerShadTop = ref<ComponentPublicInstance | null>(null);
+
+const { height } = useElementBounding(headerShadTop);
 
 interface NavMenu {
-  mainNav: NavItem[];
-  secondaryNav: NavItem[];
+  mainNav: SiteLinkTree[];
+  secondaryNav: SiteLinkTree[];
 }
 
 interface SidebarProps {
   navMenu?: NavMenu;
 }
 
-const props = withDefaults(defineProps<SidebarProps>(), {
-  navMenu: () => ({
-    mainNav: [{ name: "Home", href: "/", icon: HomeIcon }],
-    secondaryNav: [],
-  }),
-});
+const props = defineProps<SidebarProps>();
 
 const isOpen = ref(false);
+
+const topHeight = computed(() => {
+  return height.value + "px";
+});
 </script>
 
-<template>
-  <aside
-    class="hidden md:flex md:flex-col md:w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700"
-  >
-    <HeaderShadInner :navMenu="props.navMenu" />
-  </aside>
+<style lang="scss" scoped>
+.bottom {
+  height: calc(100vh);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
 
-  <Sheet v-model:open="isOpen">
-    <SheetContent side="left" class="w-[300px] sm:w-[400px]">
-      <HeaderShadInner :navMenu="props.navMenu" />
-    </SheetContent>
-  </Sheet>
+  & > * {
+    min-height: 100vh;
+    padding-top: v-bind(topHeight);
+  }
 
-  <main class="flex-1 overflow-y-auto">
-    <HeaderShadTop :navMenu="props.navMenu" @open-sheet="isOpen = true">
-      <template #left>
-      <Button variant="ghost" size="icon" class="md:hidden" @click="isOpen = true">
-        <MenuIcon class="h-6 w-6" />
-        <span class="sr-only">Open sidebar</span>
-      </Button>
-      <Button variant="ghost">Sites</Button>
-        <Button variant="ghost">Logout</Button>
-      </template>
-    </HeaderShadTop>
-    <slot name="content" />
-  </main>
-</template>
+  .aside {
+    @apply hidden md:flex md:flex-col md:w-72 bg-white dark:bg-gray-800 overflow-y-auto px-4;
+    // @apply border-r border-gray-200 dark:border-gray-700;
+    // @apply shadow-inner bg-blue-200;
+    @apply shadow-md;
+
+    // box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.1);
+  }
+}
+</style>

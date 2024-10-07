@@ -2,9 +2,15 @@ import type { NavigationTree } from '@nuxt/ui-pro/types';
 import clone from 'just-clone';
 import type { SiteSummary, SiteType } from '~/assets/types/db';
 
-export interface SiteLinkTree extends NavigationTree {
-  title: string;
+export interface SiteLinkTree {
+  title?: string;
   description?: string;
+  label?: string;
+  to?: string;
+  icon?: string
+  iconClass?: string
+  badge?: string
+  children?: SiteLinkTree[]
 }
 
 const basicNav = (label: string, icon: string, to: string, description: string, children?: SiteLinkTree[]) => {
@@ -23,6 +29,8 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
   const s = `/sites/${site.id}`
   const h = "i-heroicons-"
 
+  const newsletter = site.extras.includes("NEWSLETTER") ? [basicNav("Newsletter", `${h}envelope`, `${s}/newsletter`, "View/Edit your newsletter")] : []
+
   const defaults: SiteLinkTree[] = [
     basicNav("Pages", `${h}document`, `${s}/pages`, "Edit your site's menu and page routes", [
       basicNav("Page Routes", `${h}map`, `${s}/routes`, "Edit your site's menu and page routes"),
@@ -30,10 +38,13 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
       basicNav("Contact Form", `${h}pencil-square`, `${s}/contact-form`, "View/Edit your contact form"),
       basicNav("Additional Pages", `${h}document-duplicate`, `${s}/additional-pages`, "View/Edit your additional pages"),
     ]),
-    basicNav("Newsletter", `${h}envelope`, `${s}/newsletter`, "View/Edit your newsletter"),
+    ...newsletter,
     basicNav("Design", `${h}paint-brush`, `${s}/design`, "View/Edit your design"),
     basicNav("Settings", `${h}cog`, `${s}/settings`, "View/Edit your settings"),
   ]
+
+
+  const ticketing = site.extras.includes("EVENT_TICKETING") ? [basicNav("Ticketing", `${h}ticket`, `${s}/ticketing`, "View/Edit your ticketing")] : []
 
   switch (type) {
     case "MUSICIAN":
@@ -48,13 +59,14 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
       return [
         basicNav("Discography", `${h}musical-note`, `${s}/discography`, "View/Edit your discography"),
         basicNav("Events", `${h}calendar`, `${s}/events`, "View/Edit your events"),
-        basicNav("Ticketing", `${h}ticket`, `${s}/ticketing`, "View/Edit your ticketing"),
+        ...ticketing,
         ...d,
       ];
     case "RECORD_LABEL":
+
       return [
         basicNav("Artists", `${h}users`, `${s}/artists`, "View/Edit your artists"),
-        basicNav("Ticketing", `${h}ticket`, `${s}/ticketing`, "View/Edit your ticketing"),
+        ...ticketing,
         basicNav("Events", `${h}calendar`, `${s}/events`, "View/Edit your events"),
         ...defaults,
       ];

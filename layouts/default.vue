@@ -1,83 +1,24 @@
 <template>
-  <!-- <div class="template default"> -->
-  <!-- 
-    <LayoutHeader />
-    <UMain>
-      <UPage>
+  <LayoutHeaderShad :navMenu="{mainNav: nav, secondaryNav: []}">
+    <template #content>
+      <div class="p-8">
         <slot />
-      </UPage>
-    </UMain>
-    <LayoutFooter /> 
-    -->
-  <div>
-    <LayoutHeader />
-    <UMain>
-      <UContainer>
-        <UPage>
-          <template #left>
-            <UAside>
-              <!-- <BranchSelect /> -->
-
-              <UNavigationTree :links="navigation" />
-            </UAside>
-          </template>
-
-          <slot />
-        </UPage>
-      </UContainer>
-    </UMain>
-    <LayoutFooter />
-  </div>
-  <!-- </div> -->
+      </div>
+    </template>
+  </LayoutHeaderShad>
 </template>
 
 <script setup lang="ts">
-import type { NavigationTree } from "@nuxt/ui-pro/types";
-import type { SiteSummary, SiteType } from "~/assets/types/db";
 
+const nav = useNavigation()
 const appUrl = useRuntimeConfig().app.url;
 const appConfig = useAppConfig();
-const sites = useSites();
-const route = useRoute();
-const navigation = useNavigation();
 
 useSeoMeta({
   ogImage: `${appUrl}/images/og.png`,
   twitterImage: `${appUrl}/images/og.png`,
   twitterCard: "summary_large_image",
 });
-
-// const navigation = computed((): NavigationTree[] => {
-//   return [
-//     ...(sites.value || []).map(
-//       (site) =>
-//         ({
-//           id: site.id,
-//           label: site.name,
-//           icon: "i-heroicons-map",
-//           to: `/sites/${site.id}`,
-//           children: childrenForSiteType(site),
-//         } as NavigationTree)
-//     ),
-//     {
-//       label: "Account",
-//       icon: "i-heroicons-user-circle",
-//       to: "/account",
-//       children: [
-//         {
-//           label: "Profile",
-//           icon: "i-heroicons-user",
-//           to: "/account/profile",
-//         },
-//         {
-//           label: "Settings",
-//           icon: "i-heroicons-cog",
-//           to: "/account/settings",
-//         },
-//       ],
-//     },
-//   ];
-// });
 
 onBeforeMount(() => {
   // TODO: Figure out how to properly set this in the config
@@ -109,13 +50,6 @@ onBeforeMount(() => {
       @apply text-amber-700;
     }
   }
-
-  // ul,
-  // ol {
-  //   @apply list-disc list-inside;
-  //   @apply mb-4;
-  //   @apply pl-4;
-  // }
 
   img {
     @apply max-w-full h-auto;

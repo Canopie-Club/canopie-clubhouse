@@ -1,44 +1,51 @@
-import { getSessionId } from '~/server/api/utils/session'
+import { useDrizzle, tables, eq } from '#common/server/utils/drizzle'
+import { successCatcher } from '#common/server/utils/general'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, getRouterParam, readBody, createError } from 'h3'
 
-export default defineEventHandler(async (event) => {
-    const sessionId = getSessionId(event)
-    const pageBody = await readBody(event)
-    const siteId = getRouterParam(event, 'siteId')
-    const pageId = getRouterParam(event, 'pageId')
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const pageBody = await readBody(event)
+  const siteId = getRouterParam(event, 'siteId')
+  const pageId = getRouterParam(event, 'pageId')
 
-    if (!pageId) {
-        throw createError({statusCode: 400, statusMessage: 'Page ID is required'})
-    }
+  if (!pageId) {
+    throw createError({ statusCode: 400, statusMessage: 'Page ID is required' })
+  }
 
-    if (!siteId) {
-        throw createError({statusCode: 400, statusMessage: 'Site ID is required'})
-    }
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
 
-    const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
+  const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
 
-    if (!result.success) {
-        throw createError({statusCode: 401, statusMessage: result.message})
-    }
+  if (!result.success) {
+    throw createError({ statusCode: 401, statusMessage: result.message })
+  }
 
-    const sites = result.data
+  const sites = result.data
 
-    const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
+  const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
 
-    if (!page) {
-        throw createError({statusCode: 404, statusMessage: 'Page not found'})
-    }
+  if (!page) {
+    throw createError({ statusCode: 404, statusMessage: 'Page not found' })
+  }
 
-    delete pageBody.users;
-    delete pageBody.pages;
+  delete pageBody.users
+  delete pageBody.pages
 
-    const [updatedPage] = await useDrizzle().update(tables.pages).set({
-        id: pageBody.id,
-        title: pageBody.title,
-        slug: pageBody.path,
-        content: pageBody.content,
-        createdAt: new Date(pageBody.createdAt),
-        updatedAt: new Date(),
-    }).where(eq(tables.pages.id, pageId)).returning()
-    
-    return updatedPage
+  const [updatedPage] = await useDrizzle()
+    .update(tables.pages)
+    .set({
+      id: pageBody.id,
+      title: pageBody.title,
+      slug: pageBody.path,
+      content: pageBody.content,
+      createdAt: new Date(pageBody.createdAt),
+      updatedAt: new Date(),
+    })
+    .where(eq(tables.pages.id, pageId))
+    .returning()
+
+  return updatedPage
 })

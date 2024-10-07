@@ -35,7 +35,7 @@ const cleanFilesInDir = async (dir: string) => {
 
 export const syncFiles = async () => {
   await resolveCopyFolder('node_modules/@canopie-club/drizzle/database', 'server/database');
-  await resolveCopyFolder('node_modules/@canopie-club/drizzle/tasks', 'server/tasks');
+  await resolveCopyFolder('node_modules//drizzle/tasks', 'server/tasks');
   await resolveCopyFolder('node_modules/@canopie-club/drizzle/data/types', 'assets/types');
 
   // Read all the files in the copied folders

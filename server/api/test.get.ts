@@ -1,3 +1,6 @@
+import { useDrizzle, tables, eq } from '#common/server/utils/drizzle'
+import { defineEventHandler } from 'h3'
+
 export default defineEventHandler(async () => {
   // const users = await useDrizzle().select().from(tables.users)
 
@@ -6,16 +9,17 @@ export default defineEventHandler(async () => {
   // };
 
   // Change Site Ids
-  const ids: { from: string, to: string }[] = [
-    { from: "eca2f25b-5c7f-4223-b14b-2c6f87574dac", to: "thedukeofnorfolk" },
-    { from: "ee8e12c8-4d55-488e-b839-65efc4ee1a44", to: "disco-ordination" },
+  const ids: { from: string; to: string }[] = [
+    { from: 'eca2f25b-5c7f-4223-b14b-2c6f87574dac', to: 'thedukeofnorfolk' },
+    { from: 'ee8e12c8-4d55-488e-b839-65efc4ee1a44', to: 'disco-ordination' },
   ]
 
-  const returnResults = [];
+  const returnResults = []
 
   for (const id of ids) {
     const [site] = await useDrizzle()
-      .select().from(tables.sites)
+      .select()
+      .from(tables.sites)
       .where(eq(tables.sites.id, id.from))
 
     if (!site) {
@@ -24,11 +28,15 @@ export default defineEventHandler(async () => {
     }
 
     const pages = await useDrizzle()
-      .select().from(tables.pages)
+      .select()
+      .from(tables.pages)
       .where(eq(tables.pages.siteId, id.from))
 
     for (const page of pages) {
-      await useDrizzle().update(tables.pages).set({ siteId: id.to }).where(eq(tables.pages.id, page.id))
+      await useDrizzle()
+        .update(tables.pages)
+        .set({ siteId: id.to })
+        .where(eq(tables.pages.id, page.id))
     }
 
     // const routeRecords = await useDrizzle()
@@ -52,4 +60,4 @@ export default defineEventHandler(async () => {
   }
 
   // return returnResults;
-});
+})

@@ -1,7 +1,7 @@
 <template>
     <div class="logo flex items-center gap-2">
         <!-- <LogoChicken /> -->
-        <LogoClubhouse />
+        <LogoClubhouse class="h-7 w-auto cursor-pointer" />
 
         <!-- <div class="text-xl font-bold">
             <span class="text-amber-500">C</span>

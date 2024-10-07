@@ -1,6 +1,6 @@
 <template>
     <div>
-        <PageEditor />
+        <EditorWindow />
     </div>
 </template>
 

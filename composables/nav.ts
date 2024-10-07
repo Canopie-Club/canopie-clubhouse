@@ -1,10 +1,11 @@
 import { computed } from 'vue';
-import type { NavigationTree } from '@nuxt/ui-pro/types';
 
 export const useNavigation = () => {
     const sites = useSites();
 
-    return computed((): NavigationTree[] => {
+    console.log(sites.value)
+
+    return computed((): SiteLinkTree[] => {
         return [
             ...(sites.value || []).map(
                 (site) =>
@@ -14,7 +15,7 @@ export const useNavigation = () => {
                     icon: "i-heroicons-map",
                     to: `/sites/${site.id}`,
                     children: childrenForSiteType(site),
-                } as NavigationTree)
+                } as SiteLinkTree)
             ),
             {
                 label: "Account",
@@ -30,6 +31,11 @@ export const useNavigation = () => {
                         label: "Settings",
                         icon: "i-heroicons-cog",
                         to: "/account/settings",
+                    },
+                    {
+                        label: "Create New Site",
+                        icon: "i-heroicons-plus",
+                        to: "/create/site",
                     },
                 ],
             },

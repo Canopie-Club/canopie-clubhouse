@@ -1,23 +1,28 @@
-import type { SiteSummary, User } from '~/assets/types/db';
+import type { SiteSummary, User } from '#common/server/types/db'
+import { useCookie, useState } from 'nuxt/app'
 
-export const useUser = () => useState<User | null>('auth-user', () => null);
-export const useSites = () => useState<SiteSummary[] | null>('auth-sites', () => null);
-export const useSessionKey = (expires?: Date) => useCookie<string>('@canopie-club/session-key', { expires });
+export const useUser = () => useState<User | null>('auth-user', () => null)
+export const useSites = () => useState<SiteSummary[] | null>('auth-sites', () => null)
+export const useSessionKey = (expires?: Date) => {
+  console.log("SESSION KEY")
+  return useCookie<string>('@canopie-club/session-key', {
+    expires,
+  })
+}
+
 export const useLogout = () => {
-    const logout = () => {
-        const user = useUser();
-        const sessionKey = useSessionKey();
-        const cookie = useCookie('@canopie-club/session-key', { expires: new Date() });
+  return () => {
+    const user = useUser()
+    const sessionKey = useSessionKey()
+    const cookie = useCookie('@canopie-club/session-key', { expires: new Date() })
 
-        user.value = null;
-        sessionKey.value = '';
-        cookie.value = '';
+    user.value = null
+    sessionKey.value = ''
+    cookie.value = ''
 
-        $fetch(`/api/auth/logout?sessionKey=${sessionKey.value}`);
+    $fetch(`/api/auth/logout?sessionKey=${sessionKey.value}`)
 
-        if (window) window.location.reload();
-        else navigateTo('/');
-    }
-
-    return logout;
+    if (window) window.location.reload()
+    else navigateTo('/')
+  }
 }

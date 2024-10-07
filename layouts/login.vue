@@ -1,14 +1,24 @@
 <template>
     <div>
-      <LayoutHeader />
+
+  <LayoutHeaderShad>
+    <template #content>
+      <div class="p-8">
+        <slot />
+      </div>
+    </template>
+    <template #footer>
+      <LayoutFooter />
+    </template>
+  </LayoutHeaderShad>
+      <!-- <LayoutHeader />
       <UMain>
         <UContainer>
           <UPage>
             <slot />
           </UPage>
         </UContainer>
-      </UMain>
-      <LayoutFooter />
+      </UMain> -->
     </div>
   </template>
   

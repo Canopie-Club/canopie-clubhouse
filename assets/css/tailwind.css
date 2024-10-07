@@ -1,3 +1,5 @@
+@import '@canopie-club/toolbox/dist/runtime/common/app/assets/tailwind.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

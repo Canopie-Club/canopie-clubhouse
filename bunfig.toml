@@ -1,0 +1,7 @@
+[install.scopes]
+"@tiptap-pro" = { url = "https://registry.tiptap.dev/", token = "$TIPTAP_PRO_TOKEN" }
+"@canopie-club" = { url = "https://npm.pkg.github.com", token = "$CANOPIE_GIT_PAT_CLASSIC" }
+
+# [install.registry]
+# "https://registry.tiptap.dev/" = { token = "${TIPTAP_PRO_TOKEN}" }
+# "https://npm.pkg.github.com/" = { token = "${CANOPIE_GIT_PAT}" }

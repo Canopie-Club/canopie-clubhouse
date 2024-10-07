@@ -1,30 +1,29 @@
 <template>
-  <div>
-    <UPageBody>
-      <UContainer>
-        <UPageGrid>
-          <UPageCard v-for="(module, index) in modules" :key="index" v-bind="module">
-            <template #description>
-              <span class="line-clamp-2">{{ module.description }}</span>
-            </template>
-          </UPageCard>
-        </UPageGrid>
-      </UContainer>
-    </UPageBody>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <CardLink v-for="(module, index) in modules" :key="index" v-bind="module"> </CardLink>
   </div>
 </template>
 
 <script setup lang="ts">
-const user = useUser();
 const sites = useSites();
+import { CardLink } from "~/components/ui/custom";
 
 const modules = [
-  ...(sites.value || []).map((site) => ({
-    title: site.name ?? "Untitled Site",
-    description: `Review or edit the ${site.name} site.`,
-    icon: "i-heroicons-map",
-    to: `/sites/${site.id}`,
-  })),
+  ...(sites.value?.length
+    ? (sites.value || []).map((site) => ({
+        title: site.name ?? "Untitled Site",
+        description: `Review or edit the ${site.name} site.`,
+        icon: "i-heroicons-map",
+        to: `/sites/${site.id}`,
+      }))
+    : [
+        {
+          title: "No sites found",
+          description: "You don't have any sites yet. Create one to get started.",
+          icon: "i-heroicons-map",
+          to: "/create/site",
+        },
+      ]),
   {
     title: "Account",
     description: "Edit your account information.",

@@ -1,13 +1,10 @@
 <template>
   <UPageBody>
     <UContainer>
-      <UPageGrid v-if="site">
-        <UPageCard v-for="(module, index) in navigation" :key="index" v-bind="module">
-          <template #description>
-            <span class="line-clamp-2">{{ module.description }}</span>
-          </template>
-        </UPageCard>
-      </UPageGrid>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <UiCardLink v-for="(module, index) in navigation" :key="index" v-bind="module">
+        </UiCardLink>
+      </div>
 
       <UPageError
         v-if="error"
@@ -40,7 +37,8 @@ const {
 
 const globalNavigation = useNavigation();
 const navigation = computed((): SiteLinkTree[] => {
-  return (globalNavigation.value.find((item) => item.to === `/sites/${siteId}`)?.children || []) as SiteLinkTree[];
+  return (globalNavigation.value.find((item) => item.to === `/sites/${siteId}`)?.children ||
+    []) as SiteLinkTree[];
 });
 
 const modules = [
@@ -65,7 +63,6 @@ const modules = [
 ];
 
 const trackedKeys = ["name", "template"] as const;
-
 
 const siteName = computed({
   get: () => site.value?.name ?? "",

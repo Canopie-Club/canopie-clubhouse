@@ -1,3 +1,5 @@
-export default defineEventHandler(async (event) => {
-    return null;
+import { defineEventHandler } from 'h3'
+
+export default defineEventHandler(async () => {
+  return null
 })

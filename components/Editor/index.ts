@@ -1,0 +1,5 @@
+export { default as Editor } from './Editor.vue'
+export { default as EditorMenuBar } from './EditorMenuBar.vue'
+export { default as EditorWindow } from './EditorWindow.vue'
+export { default as EditorBubbleMenu } from './EditorBubbleMenu.vue'
+export { default as EditorLinkDialog } from './EditorLinkDialog.vue'
