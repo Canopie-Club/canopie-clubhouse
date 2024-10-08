@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-4xl mx-auto flex items-center justify-center min-h-screen">
+  <div class="max-w-4xl mx-auto flex items-center justify-center">
     <div class="w-full" :class="{ 'max-w-lg': flow === 'upload' }">
       <FileUpload v-if="flow === 'upload'" @file-upload="handleFileUpload" />
       <HeaderMapping

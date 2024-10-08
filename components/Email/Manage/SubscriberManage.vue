@@ -1,4 +1,5 @@
 <template>
+  <!-- HELLO -->
   <div class="space-y-4">
     <h2 class="text-2xl font-bold">Manage Subscribers</h2>
     <Table
@@ -18,13 +19,18 @@
       @update="handleSubscriberUpdate"
     />
   </div>
+
+  <!-- {{ subscribers }} -->
+  <!-- {{ subscribersData }} -->
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useFetch, useAsyncData } from 'nuxt/app'
-import { Table } from '#shad/ui/table'
-import { Button } from '#shad/ui/button'
+import { Table } from '~/components/ui/table'
+import { Button } from '~/components/ui/button'
+import SubscriberEdit from './SubscriberEdit.vue';
+import type { Subscriber } from '#common/server/types/db';
 
 const columns = [
   { key: 'email', label: 'Email' },
@@ -39,15 +45,16 @@ const props = defineProps<{
 
 const page = ref(1)
 const pageSize = ref(10)
-const editingSubscriber = ref(null)
+const editingSubscriber = ref<Subscriber | null>(null)
 
 const { data: subscribersData, refresh } = useFetch(`/api/sites/${props.siteId}/subscribers/all`, {
   method: 'GET',
   params: { page: page.value, pageSize: pageSize.value },
+  ...headers()
 })
 
-const subscribers = computed(() => subscribersData.value?.data || [])
-const totalSubscribers = computed(() => subscribersData.value?.total || 0)
+const subscribers = computed(() => subscribersData.value?.subscribers || [])
+const totalSubscribers = computed(() => subscribersData.value?.totalCount || 0)
 
 const pagination = computed(() => ({
   page: page.value,
@@ -55,16 +62,22 @@ const pagination = computed(() => ({
   totalItems: totalSubscribers.value,
 }))
 
-const handlePaginationChange = newPagination => {
+interface Pagination {
+  page: number
+  pageSize: number
+  totalItems: number
+}
+
+const handlePaginationChange = (newPagination: Pagination) => {
   page.value = newPagination.page
   pageSize.value = newPagination.pageSize
 }
 
-const editSubscriber = subscriber => {
+const editSubscriber = (subscriber: Subscriber) => {
   editingSubscriber.value = subscriber
 }
 
-const handleSubscriberUpdate = async updatedSubscriber => {
+const handleSubscriberUpdate = async (updatedSubscriber: Subscriber) => {
   // Implement the update logic here
   // For example, you might call an API to update the subscriber
   // await $fetch(`/api/sites/${useSiteId()}/subscribers/${updatedSubscriber.id}`, {

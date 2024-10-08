@@ -29,7 +29,14 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
   const s = `/sites/${site.id}`
   const h = "i-heroicons-"
 
-  const newsletter = site.extras.includes("NEWSLETTER") ? [basicNav("Newsletter", `${h}envelope`, `${s}/newsletter`, "View/Edit your newsletter")] : []
+  const newsletter = site.extras.includes("NEWSLETTER") ? [
+    basicNav("Newsletter", `${h}envelope`, `${s}/newsletter`, "View/Edit your newsletter", [
+      basicNav("Contacts", `${h}users`, `${s}/newsletter/contacts`, "Manage your newsletter contacts"),
+      basicNav("Letters", `${h}envelope-open`, `${s}/newsletter/letters`, "Create and manage newsletter campaigns"),
+      // basicNav("Templates", `${h}document-text`, `${s}/newsletter/templates`, "Design and manage newsletter templates"),
+      // basicNav("Analytics", `${h}chart-bar`, `${s}/newsletter/analytics`, "View newsletter performance analytics")
+    ])
+  ] : []
 
   const defaults: SiteLinkTree[] = [
     basicNav("Pages", `${h}document`, `${s}/pages`, "Edit your site's menu and page routes", [

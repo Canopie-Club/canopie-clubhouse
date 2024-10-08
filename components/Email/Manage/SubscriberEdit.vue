@@ -41,18 +41,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '#shad/ui/dialog'
-import { Button } from '#shad/ui/button'
-import { Input } from '#shad/ui/input'
-import { Label } from '#shad/ui/label'
-import { Select } from '#shad/ui/select'
+import { Button } from '~/components/ui/button'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { Select } from '~/components/ui/select'
+import type { Subscriber } from '#common/server/types/db.js'
 
 const props = defineProps<{
-  subscriber: {
-    id: string
-    email: string
-    name: string
-    status: string
-  } | null
+  subscriber: Subscriber | null
 }>()
 
 const emit = defineEmits<{
@@ -68,9 +64,13 @@ const form = ref({
 
 watch(
   () => props.subscriber,
-  newSubscriber => {
+  (newSubscriber: Subscriber | null) => {
     if (newSubscriber) {
-      form.value = { ...newSubscriber }
+      form.value = { 
+        email: newSubscriber.email,
+        name: newSubscriber.name || '',
+        status: ''
+       }
     }
   },
   { immediate: true },

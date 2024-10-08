@@ -7,9 +7,9 @@
           <span class="sr-only">Open sidebar</span>
         </Button>
 
-          <NavLink to="/">
+          <NuxtLink to="/">
            <Logo class="h-6 w-auto cursor-pointer" />
-         </NavLink>
+         </NuxtLink>
         <!-- <Button variant="ghost">Sites</Button>
         <Button variant="ghost">Logout</Button> -->
       </template>

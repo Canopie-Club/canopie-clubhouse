@@ -99,7 +99,7 @@ const toggleItem = () => {
     }
 
     &.has-children {
-      @apply text-stone-900 font-semibold;
+      @apply font-semibold;
     }
 
     .link:hover {
