@@ -1,17 +1,17 @@
 <template>
   <div class="w-full">
     <div class="mb-6">
-      <Button variant="ghost" size="sm" @click="$router.back()">
+      <Button variant="ghost" size="sm" @click="$router.push(`/sites/${siteId}/newsletter/`)">
         <Icon name="i-heroicons-arrow-left" class="mr-2 h-4 w-4" />
-        Back
+        Back to Newsletter
       </Button>
     </div>
     <div class="flex gap-2 items-center py-4">
       <Input
         class="max-w-sm"
         placeholder="Filter emails..."
-        :model-value="table.getColumn('email')?.getFilterValue() as string"
-        @update:model-value="table.getColumn('email')?.setFilterValue($event)"
+        v-model="search"
+        @keypress.enter="filter(search)"
       />
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
@@ -102,10 +102,6 @@
         </Button>
       </div>
     </div>
-
-    <div></div>
-
-    <!-- <pre class="text-xs">{{ subscribersData }}</pre> -->
   </div>
 </template>
 
@@ -128,7 +124,7 @@ import {
   getSortedRowModel,
   useVueTable,
 } from "@tanstack/vue-table";
-import { ArrowUpDown, ChevronDown } from "lucide-vue-next";
+import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown } from "lucide-vue-next";
 
 import { h, ref } from "vue";
 import DropdownAction from "@/components/Table/DataTableDropDown.vue";
@@ -171,20 +167,27 @@ const pagination = ref<PaginationState>({
   pageSize: 10,
 });
 
-// const { data: subscribersData, refresh } = useFetch(`/api/sites/${siteId}/subscribers/all`, {
-//   method: "GET",
-//   params: { page: pagination.value.pageIndex + 1, pageSize: pagination.value.pageSize },
-//   ...headers(),
-// });
+const search = ref<string>('')
 
 const getSubscribers = async () => {
-  const result = await $fetch(`/api/sites/${siteId}/subscribers/all`, {
+  const result = await $fetch(`/api/sites/${siteId}/newsletter/subscribers/all`, {
     method: "GET",
-    params: { page: pagination.value.pageIndex + 1, pageSize: pagination.value.pageSize },
+    params: { 
+      page: pagination.value.pageIndex + 1, 
+      pageSize: pagination.value.pageSize,
+      sortBy: sorting.value[0]?.id,
+      sortOrder: sorting.value[0]?.desc ? 'desc' : 'asc',
+      search: search.value,
+    },
     ...headers(),
   });
   return result;
 };
+
+const filter = async (filter: string) => {
+  search.value = filter
+  refreshData()
+}
 
 const { data: subscribersData } = await useAsyncData("subscribers", async () => {
   return await getSubscribers();
@@ -228,6 +231,18 @@ const totalPages = computed(() => {
   return Math.ceil((subscribersData.value?.totalCount || 1) / pageSize.value);
 });
 
+const sortingEmailIcon = computed(() => {
+  if (sorting.value.length === 0 || sorting.value[0].id !== 'email') return ArrowUpDown;
+  if (sorting.value[0].desc) return ArrowUp;
+  return ArrowDown;
+});
+
+const sortingNameIcon = computed(() => {
+  if (sorting.value.length === 0 || sorting.value[0].id !== 'name') return ArrowUpDown;
+  if (sorting.value[0].desc) return ArrowUp;
+  return ArrowDown;
+});
+
 const columns: ColumnDef<SubscriberWithSubscription>[] = [
   // {
   //   id: "select",
@@ -257,7 +272,7 @@ const columns: ColumnDef<SubscriberWithSubscription>[] = [
           variant: "ghost",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
-        () => ["Name", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ["Name", h(sortingNameIcon.value, { class: "ml-2 h-4 w-4" })]
       );
     },
     cell: ({ row }) => h("div", { class: "pl-4" }, row.original.subscriber.name || ""),
@@ -271,7 +286,7 @@ const columns: ColumnDef<SubscriberWithSubscription>[] = [
           variant: "ghost",
           onClick: () => column.toggleSorting(column.getIsSorted() === "asc"),
         },
-        () => ["Email", h(ArrowUpDown, { class: "ml-2 h-4 w-4" })]
+        () => ["Email", h(sortingEmailIcon.value, { class: "ml-2 h-4 w-4" })]
       );
     },
     cell: ({ row }) => h("div", { class: "lowercase" }, row.original.subscriber.email),
@@ -322,7 +337,10 @@ const table = useVueTable({
   getSortedRowModel: getSortedRowModel(),
   getFilteredRowModel: getFilteredRowModel(),
   getExpandedRowModel: getExpandedRowModel(),
-  onSortingChange: (updaterOrValue) => valueUpdater(updaterOrValue, sorting),
+  onSortingChange: (updaterOrValue) => {
+    valueUpdater(updaterOrValue, sorting)
+    refreshData()
+  },
   onColumnFiltersChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnFilters),
   onColumnVisibilityChange: (updaterOrValue) => valueUpdater(updaterOrValue, columnVisibility),
   onRowSelectionChange: (updaterOrValue) => valueUpdater(updaterOrValue, rowSelection),

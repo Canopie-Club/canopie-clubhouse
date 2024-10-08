@@ -1,5 +1,5 @@
 import { defineEventHandler, createError, getQuery } from 'h3'
-import { getSiteSubscribers, userSite } from '#common/server/utils/db.session'
+import { userSite } from '#common/server/utils/db.session'
 
 export default defineEventHandler(async event => {
     const sessionId = getSessionId(event)

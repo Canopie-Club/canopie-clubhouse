@@ -915,7 +915,7 @@ __metadata:
 
 "@canopie-club/toolbox@https://github.com/Canopie-Club/canopie-toolbox.git":
   version: 1.1.0
-  resolution: "@canopie-club/toolbox@https://github.com/Canopie-Club/canopie-toolbox.git#commit=2b89830d96732ef0244fa3d15c15a04ba241381f"
+  resolution: "@canopie-club/toolbox@https://github.com/Canopie-Club/canopie-toolbox.git#commit=761c51753263a2ad96a9addd91611f87a5af419b"
   dependencies:
     "@aws-sdk/client-ses": "npm:^3.658.1"
     "@heroicons/vue": "npm:^2.1.5"
@@ -953,7 +953,7 @@ __metadata:
     uuid: "npm:^10.0.0"
     vue-multiselect: "npm:^3.1.0"
     wrangler: "npm:^3.78.12"
-  checksum: 10c0/97551db6ce18479d9f6c4201c601e26d036ae048df900f06f62231f9f5b363a082d71f469bdfdd0a7e347ce6e2727cc675961e4fc8a1ef185a1cf417560e67d1
+  checksum: 10c0/6f27f2370198d32d9fa28ba5e33a1dd870f058c78eb37a32c3b7b1177daf05c96df00d27652afba63e7d23355c88471dabec82934b460abc802c1b59daa3be56
   languageName: node
   linkType: hard
 
@@ -2346,7 +2346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/collections@npm:^1.0.455":
+"@iconify/collections@npm:^1.0.455, @iconify/collections@npm:^1.0.468":
   version: 1.0.468
   resolution: "@iconify/collections@npm:1.0.468"
   dependencies:
@@ -2362,7 +2362,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/utils@npm:^2.1.32":
+"@iconify/utils@npm:^2.1.32, @iconify/utils@npm:^2.1.33":
   version: 2.1.33
   resolution: "@iconify/utils@npm:2.1.33"
   dependencies:
@@ -2848,7 +2848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/icon@npm:^1.5.1, @nuxt/icon@npm:^1.5.2":
+"@nuxt/icon@npm:^1.5.1":
   version: 1.5.4
   resolution: "@nuxt/icon@npm:1.5.4"
   dependencies:
@@ -2866,6 +2866,27 @@ __metadata:
     pathe: "npm:^1.1.2"
     std-env: "npm:^3.7.0"
   checksum: 10c0/9b8817304a7f1a61b9aafa877b4fa74277df71f478f2ce80dbd3ea3f84e212cc288c9993b0a70f9f265ba1994e36e9bbce15304e369772882731e73f7825907b
+  languageName: node
+  linkType: hard
+
+"@nuxt/icon@npm:^1.5.2":
+  version: 1.5.5
+  resolution: "@nuxt/icon@npm:1.5.5"
+  dependencies:
+    "@iconify/collections": "npm:^1.0.468"
+    "@iconify/types": "npm:^2.0.0"
+    "@iconify/utils": "npm:^2.1.33"
+    "@iconify/vue": "npm:4.1.3-beta.1"
+    "@nuxt/devtools-kit": "npm:^1.5.2"
+    "@nuxt/kit": "npm:^3.13.2"
+    consola: "npm:^3.2.3"
+    local-pkg: "npm:^0.5.0"
+    mlly: "npm:^1.7.2"
+    ohash: "npm:^1.1.4"
+    pathe: "npm:^1.1.2"
+    std-env: "npm:^3.7.0"
+    tinyglobby: "npm:^0.2.9"
+  checksum: 10c0/e01e9a90a2b3bf7273f04b6f325b4249c2b3c496212ec11674f5129179e0915452c6c977d47369526b1415ce6e5bb1cf6930c2f085675edbeaa6e51724376a91
   languageName: node
   linkType: hard
 
@@ -10363,7 +10384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mlly@npm:^1.2.0, mlly@npm:^1.3.0, mlly@npm:^1.4.2, mlly@npm:^1.6.1, mlly@npm:^1.7.1":
+"mlly@npm:^1.2.0, mlly@npm:^1.3.0, mlly@npm:^1.4.2, mlly@npm:^1.6.1, mlly@npm:^1.7.1, mlly@npm:^1.7.2":
   version: 1.7.2
   resolution: "mlly@npm:1.7.2"
   dependencies:
@@ -13323,7 +13344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tinyglobby@npm:^0.2.2, tinyglobby@npm:^0.2.6":
+"tinyglobby@npm:^0.2.2, tinyglobby@npm:^0.2.6, tinyglobby@npm:^0.2.9":
   version: 0.2.9
   resolution: "tinyglobby@npm:0.2.9"
   dependencies:

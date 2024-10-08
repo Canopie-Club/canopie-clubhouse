@@ -1,5 +1,6 @@
 import { defineEventHandler, createError, getQuery } from 'h3'
-import { getSiteSubscribers, userSite } from '#common/server/utils/db.session'
+import { getSiteLetters } from '#common/server/utils/db.session/newsletter'
+import { userSite } from '#common/server/utils/db.session'
 
 export default defineEventHandler(async event => {
   const sessionId = getSessionId(event)
@@ -15,11 +16,18 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 401, message: 'Site not found' })
   }
 
-  const { page = 1, pageSize = 10 } = getQuery(event)
+  let { page = 1, pageSize = 10, sortOrder } = getQuery(event)
 
-  const result = await getSiteSubscribers(siteId, {
+  if (!['asc', 'desc'].includes(`${sortOrder}`)) {
+    sortOrder = undefined
+  } else {
+    sortOrder = `${sortOrder}` as 'asc' | 'desc'
+  }
+
+  const result = await getSiteLetters(siteId, {
     page: Number(page),
     pageSize: Number(pageSize),
+    sortOrder: sortOrder as 'asc' | 'desc' | undefined,
   })
 
   return result
