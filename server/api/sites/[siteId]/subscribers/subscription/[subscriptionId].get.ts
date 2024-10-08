@@ -23,8 +23,11 @@ export default defineEventHandler(async event => {
         throw createError({ statusCode: 400, message: 'Subscription ID is required' })
     }
 
-    const result = await useDrizzle()
-        .select()
+    const [result] = await useDrizzle()
+        .select({
+            subscriber: tables.subscribers,
+            subscription: tables.subscriptions,
+        })
         .from(tables.subscriptions)
         .where(eq(tables.subscriptions.id, subscriptionId))
         .innerJoin(tables.subscribers, eq(tables.subscriptions.subscriberId, tables.subscribers.id))
