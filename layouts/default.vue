@@ -8,6 +8,7 @@
       </template>
     </LayoutHeaderShad>
     <div id="explorer"></div>
+    <div id="popup"></div>
   </div>
 </template>
 

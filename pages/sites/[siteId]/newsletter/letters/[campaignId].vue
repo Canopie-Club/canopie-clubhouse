@@ -15,7 +15,7 @@
   
       <div class="flex gap-4 justify-start">
         <Button class="gap-2" :disabled="saveDisabled" @click="saveCampaign"><Icon name="i-lucide-save" /> Save </Button>
-        <Button class="gap-2" :disabled="sendDisabled"><Icon name="i-lucide-eye" /> Preview</Button>
+        <Button class="gap-2" :disabled="sendDisabled" @click="previewOpen = true"><Icon name="i-lucide-eye" /> Preview</Button>
         <Button class="gap-2" :disabled="sendDisabled"><Icon name="i-lucide-send" /> Send Newsletter</Button>
       </div>
     </div>
@@ -23,6 +23,14 @@
       <h1 class="text-2xl font-bold">Error</h1>
       <pre class="text-xs">{{ error }}</pre>
     </div>
+
+    <LayoutPopup v-model:open="previewOpen">
+      <div class="max-w-xl m-auto">
+        <div v-if="previewOpen" class="preview-container clear-styles">
+          <div v-html="previewContent"></div>
+        </div>
+      </div>
+    </LayoutPopup>
   </div>
 </template>
 
@@ -38,6 +46,7 @@ const siteId = route.params.siteId as string;
 const campaignId = route.params.campaignId as string;
 
 const cache = ref<Record<string, any>>({});
+const previewOpen = ref(false);
 
 const { data: campaign, error, status, refresh } = useFetch(`/api/sites/${siteId}/newsletter/letters/letter/${campaignId}`, {
   ...headers(),
@@ -68,6 +77,15 @@ const saveDisabled = computed(() => {
 const sendDisabled = computed(() => {
   return !campaign.value?.subject || !campaign.value?.content;
 });
+
+const previewContent = computed(() => {
+  if (!campaign.value) return '';
+  return prepareEmailHtml(campaign.value.content);
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.clear-styles {
+  all: initial;
+}
+</style>
