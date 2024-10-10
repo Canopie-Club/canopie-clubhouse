@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="mb-6">
-      <Button variant="ghost" size="sm" @click="$router.back()">
+      <Button variant="ghost" size="sm" @click="$router.push(`/sites/${siteId}/`)">
         <Icon name="i-heroicons-arrow-left" class="mr-2 h-4 w-4" />
-        Back
+        Back to {{ siteId }}
       </Button>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -17,17 +17,19 @@ import { Button } from "~/components/ui/button";
 
 const route = useRoute();
 
+const siteId = route.params.siteId;
+
 const modules = [
   {
     title: "Manage Contacts",
     description: "View, add, edit, or remove newsletter contacts.",
-    to: `${route.path}/contacts`,
+    to: `/sites/${siteId}/newsletter/contacts`,
     icon: "i-heroicons-users",
   },
   {
     title: "Letters",
     description: "Create, edit, and send newsletter letters.",
-    to: `${route.path}/letters`,
+    to: `/sites/${siteId}/newsletter/letters`,
     icon: "i-heroicons-envelope-open",
   },
 ];

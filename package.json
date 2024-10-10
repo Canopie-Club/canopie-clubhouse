@@ -40,6 +40,7 @@
     "@tiptap-pro/extension-node-range": "^2.11.9",
     "@tiptap/core": "^2.8.0",
     "@tiptap/extension-collaboration": "^2.8.0",
+    "@tiptap/extension-font-family": "^2.8.0",
     "@tiptap/extension-image": "^2.8.0",
     "@tiptap/extension-link": "^2.8.0",
     "@tiptap/extension-placeholder": "^2.8.0",
@@ -88,6 +89,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.8",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",

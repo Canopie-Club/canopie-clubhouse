@@ -2337,6 +2337,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@iconify-json/lucide@npm:^1.2.8":
+  version: 1.2.8
+  resolution: "@iconify-json/lucide@npm:1.2.8"
+  dependencies:
+    "@iconify/types": "npm:*"
+  checksum: 10c0/aca6570a14c9330ed193f765bcc23ef42255129e4199acc89fff0e08abfa0a506fff909afd68a921fb8add8e741a24de6e603c7333c4269b0fa102d06ac3bc42
+  languageName: node
+  linkType: hard
+
 "@iconify-json/vscode-icons@npm:^1.2.2":
   version: 1.2.2
   resolution: "@iconify-json/vscode-icons@npm:1.2.2"
@@ -4463,6 +4472,16 @@ __metadata:
     "@tiptap/core": ^2.7.0
     "@tiptap/pm": ^2.7.0
   checksum: 10c0/d9895b0c78d40dca295fe17bf2d3c1a181a2aeb1e9fec958ef7df8bac1fe59345f4f22a1bc3a5f7cfe54ff472c6ebea725c71b8db8f5082ec3e350e5da7f4a7d
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-font-family@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "@tiptap/extension-font-family@npm:2.8.0"
+  peerDependencies:
+    "@tiptap/core": ^2.7.0
+    "@tiptap/extension-text-style": ^2.7.0
+  checksum: 10c0/5d4c7911ef517114ecf299a27678ce9da3e05291def4add80f1acad0276bcf66ca3685c5509018f16fd54654611aae5fe3026e7ee84ae222c193d26a5fdae61d
   languageName: node
   linkType: hard
 
@@ -11180,6 +11199,7 @@ __metadata:
     "@editorjs/table": "npm:^2.4.1"
     "@editorjs/underline": "npm:^1.1.0"
     "@heroicons/vue": "npm:^2.1.5"
+    "@iconify-json/lucide": "npm:^1.2.8"
     "@nuxt/fonts": "npm:^0.7.2"
     "@nuxt/image": "npm:^1.8.0"
     "@nuxt/ui": "npm:^2.18.4"
@@ -11194,6 +11214,7 @@ __metadata:
     "@tiptap-pro/extension-node-range": "npm:^2.11.9"
     "@tiptap/core": "npm:^2.8.0"
     "@tiptap/extension-collaboration": "npm:^2.8.0"
+    "@tiptap/extension-font-family": "npm:^2.8.0"
     "@tiptap/extension-image": "npm:^2.8.0"
     "@tiptap/extension-link": "npm:^2.8.0"
     "@tiptap/extension-placeholder": "npm:^2.8.0"

@@ -86,6 +86,46 @@
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+    <div class="button-group dropdown">
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button class="button">
+            Font
+            <Icon name="heroicons:chevron-down" class="ml-2 h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Arial').run()">
+            Arial
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Helvetica').run()">
+            Helvetica
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Times New Roman').run()">
+            Times New Roman
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Courier').run()">
+            Courier
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Verdana').run()">
+            Verdana
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Georgia').run()">
+            Georgia
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Palatino').run()">
+            Palatino
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().setFontFamily('Garamond').run()">
+            Garamond
+          </DropdownMenuItem>
+          <DropdownMenuItem @select="editor?.chain().focus().unsetFontFamily().run()">
+            Default
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
     </div>
 
     <EditorLinkDialog ref="linkDialog" />

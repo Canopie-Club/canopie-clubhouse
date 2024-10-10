@@ -1,7 +1,16 @@
 <template>
   <div class="editor-container tiptap">
     <EditorMenuBar :editor="editor" :text-is-selected="textIsSelected" />
-    <EditorContent :editor="editor" class="editor-content" />
+    <!-- TODO: Fix issue where drag handle is visible outside of scrollable area -->
+    <EditorContent
+      :editor="editor"
+      class="editor-content"
+      :style="{ maxHeight: maxHeight }"
+      :class="{
+        'border border-gray-200 rounded-md p-4 overflow-y-auto':
+          bordered,
+      }"
+    />
     <EditorBubbleMenu :editor="editor" />
 
     <!-- <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
@@ -45,15 +54,23 @@ import Subscript from "@tiptap/extension-subscript";
 import Underline from "@tiptap/extension-underline";
 import Strike from "@tiptap/extension-strike";
 import Link from "@tiptap/extension-link";
+import FontFamily from '@tiptap/extension-font-family'
+import TextStyle from '@tiptap/extension-text-style'
 
-type ContentType<T extends "json" | "html"> = T extends "json" ? JSONContent : string;
+type ContentType<T extends "json" | "html"> = T extends "json"
+  ? JSONContent
+  : string;
 
 const props = withDefaults(
   defineProps<{
     contentMode?: "json" | "html";
+    bordered?: boolean;
+    maxHeight?: string;
   }>(),
   {
     contentMode: "json",
+    bordered: false,
+    maxHeight: "500px",
   }
 );
 
@@ -68,15 +85,15 @@ const updateEditorContent = (content: JSONContent | string) => {
       ? content === editor.value?.getHTML()
       : JSON.stringify(content) === JSON.stringify(editor.value?.getJSON());
 
-  console.log("isSame", isSame);
-
   if (isSame) return;
 
   editor.value?.commands.setContent(content);
 };
 
 const getContent = () => {
-  return props.contentMode === "json" ? editor.value?.getJSON() : editor.value?.getHTML();
+  return props.contentMode === "json"
+    ? editor.value?.getJSON()
+    : editor.value?.getHTML();
 };
 
 defineExpose({
@@ -99,6 +116,8 @@ const editor = useEditor({
     Subscript,
     Link,
     SoftBreak,
+    FontFamily,
+    TextStyle,
     // CustomEnterBehavior,
     ImageSelector,
     NodeRange.configure({
@@ -122,7 +141,8 @@ const editor = useEditor({
   content: model.value,
   editorProps: {
     attributes: {
-      class: "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
+      class:
+        "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none",
     },
   },
   onUpdate: (e) => {
@@ -145,7 +165,8 @@ const editor = useEditor({
       parentOffset: $to.parentOffset,
     };
 
-    const selectionExists = JSON.stringify(fromCompare) !== JSON.stringify(toCompare);
+    const selectionExists =
+      JSON.stringify(fromCompare) !== JSON.stringify(toCompare);
     // console.log(selectionExists, fromCompare, toCompare)
     textIsSelected.value = selectionExists;
   },
