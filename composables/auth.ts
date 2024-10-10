@@ -4,7 +4,6 @@ import { useCookie, useState } from 'nuxt/app'
 export const useUser = () => useState<User | null>('auth-user', () => null)
 export const useSites = () => useState<SiteSummary[] | null>('auth-sites', () => null)
 export const useSessionKey = (expires?: Date) => {
-  console.log("SESSION KEY")
   return useCookie<string>('@canopie-club/session-key', {
     expires,
   })

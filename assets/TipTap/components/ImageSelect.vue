@@ -1,19 +1,21 @@
 <template>
   <node-view-wrapper>
-    <div
-      @click="explorerOpen = false"
-      class="click-off-close"
-      :class="{ hiding: !explorerOpen }"
-    ></div>
-    <div class="explorer-container" :class="{ 'pointer-events-none': !explorerOpen }">
-      <Explorer
-        v-model:open="explorerOpen"
-        site-id="thedukeofnorfolk"
-        :confirm-selection="confirmSelection"
-        show-footer
-        closable
-      />
-    </div>
+    <Teleport to="#explorer">
+      <div
+        @click="explorerOpen = false"
+        class="click-off-close"
+        :class="{ hiding: !explorerOpen }"
+      ></div>
+      <div class="explorer-container" :class="{ 'pointer-events-none': !explorerOpen }">
+        <Explorer
+          v-model:open="explorerOpen"
+          site-id="thedukeofnorfolk"
+          :confirm-selection="confirmSelection"
+          show-footer
+          closable
+        />
+      </div>
+    </Teleport>
     <div class="image-select flex relative">
       <img class="rounded-md" v-if="selection" :src="selection" alt="Selected image" />
       <div v-if="selection" @click="addImage" class="change-image">
@@ -27,28 +29,29 @@
 </template>
 
 <script lang="ts" setup>
-import { NodeViewContent, nodeViewProps, NodeViewWrapper } from '@tiptap/vue-3'
-import { ref } from 'vue'
+import { NodeViewContent, nodeViewProps, NodeViewWrapper } from "@tiptap/vue-3";
+// import { ImageSelector } from "../ImageSelector";
+import { ref } from "vue";
 
-const props = defineProps(nodeViewProps)
+const props = defineProps(nodeViewProps);
 
 const addImage = () => {
-  explorerOpen.value = true
-}
+  explorerOpen.value = true;
+};
 
-const explorerOpen = ref(false)
-const selection = computed(() => props.node.attrs['tt-src'])
+const explorerOpen = ref(false);
+const selection = computed(() => props.node.attrs["tt-src"]);
 
 const confirmSelection = (path: string | null) => {
   // if (path) {
   //   selection.value = path
   // }
 
-  console.log({ src: path })
-  props.updateAttributes({ 'tt-src': path || '' })
+  console.log({ src: path });
+  props.updateAttributes({ "tt-src": path || "" });
 
-  explorerOpen.value = false
-}
+  explorerOpen.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -89,7 +92,7 @@ const confirmSelection = (path: string | null) => {
 
 .click-off-close {
   @apply fixed top-0 left-0 w-full h-full;
-  @apply z-10;
+  @apply z-20;
   @apply bg-black/50;
   @apply transition-opacity duration-300;
   @apply cursor-pointer;

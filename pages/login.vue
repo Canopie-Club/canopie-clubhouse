@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-md mx-auto mt-10 border-gray-200 p-4 rounded-md">
     <h1 class="text-2xl font-bold text-center mb-4">Login</h1>
-    <form class="space-y-4" @submit="onSubmit">
+    <form class="space-y-4" @submit.prevent="onSubmit">
       <FormField v-slot="{ field }" name="email">
         <FormItem>
           <FormLabel>Email</FormLabel>

@@ -30,7 +30,7 @@ export default eventHandler<Promise<BlobObject[]>>(async event => {
     throw createError({ statusCode: 400, message: 'No path provided' })
   }
 
-  path = path.replaceAll(new RegExp(`^${site.id}/`, 'g'), '')
+  path = path.replaceAll(new RegExp(`^${site.id}/|^${site.id}/?$`, 'g'), '')
 
   const results: BlobObject[] = []
   for (const file of files) {

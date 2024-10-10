@@ -1,20 +1,17 @@
 <template>
-  <UPageBody>
-    <UContainer>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <UiCardLink v-for="(module, index) in navigation" :key="index" v-bind="module">
-        </UiCardLink>
-      </div>
+  <div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <UiCardLink v-for="(module, index) in navigation" :key="index" v-bind="module"> </UiCardLink>
+    </div>
 
-      <UPageError
-        v-if="error"
-        :code="error.statusCode"
-        name="Site not found!"
-        message="Please check that you're logged in and have access to this site."
-      >
-      </UPageError>
-    </UContainer>
-  </UPageBody>
+    <UPageError
+      v-if="error"
+      :code="error.statusCode"
+      name="Site not found!"
+      message="Please check that you're logged in and have access to this site."
+    >
+    </UPageError>
+  </div>
 </template>
 
 <script setup lang="ts">

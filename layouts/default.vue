@@ -1,11 +1,14 @@
 <template>
-  <LayoutHeaderShad :navMenu="{mainNav: nav, secondaryNav: []}">
-    <template #content>
-      <div class="p-8">
-        <slot />
-      </div>
-    </template>
-  </LayoutHeaderShad>
+  <div>
+    <LayoutHeaderShad :navMenu="{mainNav: nav, secondaryNav: []}">
+      <template #content>
+        <div class="p-8">
+          <slot />
+        </div>
+      </template>
+    </LayoutHeaderShad>
+    <div id="explorer"></div>
+  </div>
 </template>
 
 <script setup lang="ts">

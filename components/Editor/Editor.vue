@@ -99,7 +99,7 @@ const editor = useEditor({
     Subscript,
     Link,
     SoftBreak,
-    CustomEnterBehavior,
+    // CustomEnterBehavior,
     ImageSelector,
     NodeRange.configure({
       // allow to select only on depth 0

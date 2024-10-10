@@ -173,6 +173,7 @@ const onDrop = async (files: File[] | null) => {
 
   const formData = new FormData();
   files.forEach((file, index) => formData.append(`files[${index}]`, file));
+  console.log({ siteId: props.siteId, folder: folder.value });
 
   formData.append("filepath", folder.value?.path || "");
 
@@ -181,6 +182,8 @@ const onDrop = async (files: File[] | null) => {
     body: formData,
     ...headers(),
   });
+
+  console.log({ results });
 
   await refresh();
   explorerFolderRef.value?.refreshFiles();
