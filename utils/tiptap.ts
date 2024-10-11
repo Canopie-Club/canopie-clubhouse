@@ -1,10 +1,10 @@
 interface PrepareEmailHtmlOptions {
-    wrap?: string;
-    baseUrl?: string;
+  wrap?: string;
+  baseUrl?: string;
 }
 
 export const injectEmailStyles = () => {
-    return `<style>
+  return `<style>
     /* Reset styles */
     body, p, h1, h2, h3, h4, h5, h6, ul, ol, li, div, span, table, tr, td, th {
       margin: 0;
@@ -16,6 +16,7 @@ export const injectEmailStyles = () => {
     }
     
     /* Base styles */
+    .body,
     body {
       width: 100% !important;
       -webkit-text-size-adjust: 100%;
@@ -23,9 +24,10 @@ export const injectEmailStyles = () => {
       margin: 0;
       padding: 0;
       line-height: 1.6;
-      background-color: #f6f6f6;
+      /* background-color: #f6f6f6; */
       color: #333333;
-      font-family: Arial, sans-serif;
+      font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+      font-size: 14px;
     }
     
     /* Typography */
@@ -42,6 +44,12 @@ export const injectEmailStyles = () => {
     p, ul, ol {
       margin-bottom: 16px;
     }
+
+    hr {
+      margin: 16px 0;
+      border: 0;
+      border-top: 1px solid #e5e5e5;
+    }
     
     /* Links */
     a {
@@ -57,6 +65,13 @@ export const injectEmailStyles = () => {
       line-height: 100%;
       outline: none;
       text-decoration: none;
+    }
+
+    /* Top Level Images */
+    body > img,
+    .body > img {
+      margin-bottom: 16px;
+      border-radius: 4px;
     }
     
     /* Tables */
@@ -75,16 +90,27 @@ export const injectEmailStyles = () => {
         padding: 10px !important;
       }
     }
-  </style>`
-}
+  </style>`;
+};
 
-export const prepareEmailHtml = (html: string, { wrap = 'html', baseUrl = '' }: PrepareEmailHtmlOptions = {}) => {
-    // TODO: Handle baseUrl
-    html = html.replace(/tt-src/g, 'src')
-    html = `${injectEmailStyles()}
-  ${html}`
-  
-    html = `<${wrap}>${html}</${wrap}>`
-  
-    return html
+export const prepareEmailHtml = (
+  html: string,
+  { wrap = "html", baseUrl = "" }: PrepareEmailHtmlOptions = {}
+) => {
+  // TODO: Handle baseUrl
+  html = html.replace(/tt-src/g, "src");
+
+  let body = `<body>${html}</body>`;
+  if (wrap !== "html") {
+    body = `<div class="body">${html}</div>`;
   }
+
+  body = `${injectEmailStyles()}
+  ${body}`;
+
+  console.log(body);
+
+  html = `<${wrap}>${body}</${wrap}>`;
+
+  return html;
+};

@@ -59,7 +59,7 @@ export const ImageSelector = Node.create<ImageSelectorOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    console.log(HTMLAttributes)
+    // console.log(HTMLAttributes)
     // return ['draggable-item', mergeAttributes(HTMLAttributes), 0]
     return ['img', mergeAttributes(HTMLAttributes, { 'data-type': 'image-select' }), 0]
   },

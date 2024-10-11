@@ -136,7 +136,7 @@ import {
 import { ArrowUpDown, ArrowUp, ArrowDown, ChevronDown } from "lucide-vue-next";
 
 import { h, ref } from "vue";
-import DropdownAction from "@/components/Table/DataTableDropDown.vue";
+import DropdownAction from "@/components/Table/DataTableActions.vue";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -212,11 +212,6 @@ const createLetter = async () => {
   router.push(`/sites/${siteId}/newsletter/letters/${result.id}`);
 };
 
-const filter = async (filter: string) => {
-  search.value = filter;
-  refreshData();
-};
-
 const { data: lettersData } = await useAsyncData("letters", async () => {
   return await getLetters();
 });
@@ -285,16 +280,14 @@ const columns: ColumnDef<ResponseLetter>[] = [
     cell: ({ row }) => {
       const subscriber = row.original;
 
-      return h(
-        "div",
-        { class: "relative" }
-        //   h(DropdownAction, {
-        //     siteId,
-        //     subscriber: subscriber.subscriber,
-        //     subscription: subscriber.subscription,
-        //     onExpand: row.toggleExpanded,
-        //   })
-      );
+      // return h(
+      //   "div",
+      //   { class: "relative" });
+      return h(DropdownAction, {
+        actions: [
+          { label: "Edit", action: () => router.push(`/sites/${siteId}/newsletter/letters/${row.original.id}`) },
+        ],
+      });
     },
   },
 ];

@@ -25,9 +25,15 @@
     </div>
 
     <LayoutPopup v-model:open="previewOpen">
-      <div class="max-w-xl m-auto">
-        <div v-if="previewOpen" class="preview-container clear-styles">
-          <div v-html="previewContent"></div>
+      <div class="w-full h-full absolute top-0 left-0 rounded-lg overflow-y-auto bg-gray-200">
+        <div class="h-4"></div>
+        <div class="max-w-xl m-auto bg-white p-4 rounded-lg my-4">
+          <div class="text-sm mb-2 border-b border-gray-200 border-solid pb-2">
+            Subject: {{ campaign?.subject }}
+          </div>
+          <div v-if="previewOpen" class="preview-container clear-styles">
+            <div v-html="previewContent"></div>
+          </div>
         </div>
       </div>
     </LayoutPopup>
@@ -45,7 +51,8 @@ const route = useRoute();
 const siteId = route.params.siteId as string;
 const campaignId = route.params.campaignId as string;
 
-const cache = ref<Record<string, any>>({});
+const cache = ref<Record<string, any> | null>(null);
+
 const previewOpen = ref(false);
 
 const { data: campaign, error, status, refresh } = useFetch(`/api/sites/${siteId}/newsletter/letters/letter/${campaignId}`, {
@@ -63,15 +70,22 @@ async function saveCampaign() {
   })
   
   cache.value = clone(result);
-  console.log(cache.value);
   campaign.value = clone(result);
 }
 
 const editor = ref<InstanceType<typeof Editor> | null>(null);
 
 const saveDisabled = computed(() => {
-  console.log(cache.value, campaign.value);
-  return compare(cache.value, campaign.value);
+  if (!cache.value) cache.value = campaign.value ? clone(campaign.value) : null;
+
+  // Force recomputation by accessing nested properties
+  const campaignSubject = campaign.value?.subject;
+  const campaignContent = campaign.value?.content;
+
+  const cachedSubject = cache.value?.subject;
+  const cachedContent = cache.value?.content;
+  
+  return compare(cachedSubject, campaignSubject) && compare(cachedContent, campaignContent);
 });
 
 const sendDisabled = computed(() => {
@@ -80,7 +94,7 @@ const sendDisabled = computed(() => {
 
 const previewContent = computed(() => {
   if (!campaign.value) return '';
-  return prepareEmailHtml(campaign.value.content);
+  return prepareEmailHtml(campaign.value.content, { wrap: 'div' });
 });
 </script>
 
