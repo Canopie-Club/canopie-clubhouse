@@ -1,11 +1,11 @@
 <template>
-  <LayoutProps title="Profile">
-    <UPageCard v-if="user" class="my-8">
-      <template #title>
-        Profile Overview
-      </template>
+  <div>
+    <Card class="my-8" v-if="user">
+      <CardHeader>
+        <CardTitle>Profile Overview</CardTitle>
+      </CardHeader>
 
-      <template #description>
+      <CardContent>
         <div class="profile-card flex flex-col gap-2">
           <template v-if="!editProfile">
             <p><strong>Name:</strong> {{ user.name }}</p>
@@ -26,16 +26,25 @@
           </template>
           <p><strong>Profile Created:</strong> {{ user.createdAt }}</p>
         </div>
-      </template>
-      
-    </UPageCard>
+      </CardContent>
+    </Card>
 
-    <UButton @click="() => (editProfile = !editProfile)">Edit Profile</UButton>
+    <Button @click="() => (editProfile = !editProfile)">Edit Profile</Button>
     
-  </LayoutProps>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { Button } from "~/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+
 const user = useUser();
 
 const editProfile = ref(false);

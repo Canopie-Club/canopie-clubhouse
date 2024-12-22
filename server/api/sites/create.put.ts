@@ -2,6 +2,7 @@ import { successCatcher } from '#common/server/utils/general'
 import { getUserFromSession } from '#common/server/utils/db.session'
 import { defineEventHandler, createError } from 'h3'
 import type { SiteExtraType } from '#common/server/types/db'
+import crypto from 'node:crypto'
 
 export default defineEventHandler(async event => {
     const sessionId = getSessionId(event)
@@ -60,6 +61,13 @@ export default defineEventHandler(async event => {
         throw createError({ statusCode: 401, statusMessage: 'Site user could not be created' })
     }
 
+    const route = await useDrizzle().insert(tables.routeRecords).values({
+        siteId,
+        id: crypto.randomUUID(),
+        domain: 'canopie.club',
+        subdomain: siteId,
+    })
+
     if (!success) {
         throw createError({ statusCode: 401, statusMessage: message })
     }
@@ -71,6 +79,7 @@ export default defineEventHandler(async event => {
             site,
             siteExtras,
             siteUser,
+            route,
         },
     }
 })

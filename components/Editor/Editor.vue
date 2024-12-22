@@ -7,7 +7,7 @@
       class="editor-content"
       :style="{ maxHeight: maxHeight }"
       :class="{
-        'border border-gray-200 rounded-md p-4 overflow-y-auto':
+        'relative border border-gray-200 rounded-md p-4 overflow-y-scroll overflow-hidden':
           bordered,
       }"
     />

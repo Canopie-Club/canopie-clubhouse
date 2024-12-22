@@ -119,16 +119,16 @@ export default defineNuxtConfig({
     },
 
     plugins: [
-      {
-        name: 'log-css-virtual-file',
-        transform(code, id) {
-          if (id.includes('virtual:nuxt') && id.endsWith('css.mjs')) {
-            // Optionally write to a file for easier inspection
-            fs.writeFileSync(path.join(process.cwd(), 'virtual-css-content.mjs'), code)
-          }
-          return null
-        }
-      }
+      // {
+      //   name: 'log-css-virtual-file',
+      //   transform(code, id) {
+      //     if (id.includes('virtual:nuxt') && id.endsWith('css.mjs')) {
+      //       // Optionally write to a file for easier inspection
+      //       fs.writeFileSync(path.join(process.cwd(), 'virtual-css-content.mjs'), code)
+      //     }
+      //     return null
+      //   }
+      // }
     ]
   }
 });

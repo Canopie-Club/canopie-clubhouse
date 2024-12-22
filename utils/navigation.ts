@@ -41,6 +41,7 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
   const defaults: SiteLinkTree[] = [
     basicNav("Pages", `${h}document`, `${s}/pages`, "Edit your site's menu and page routes", [
       basicNav("Page Routes", `${h}map`, `${s}/routes`, "Edit your site's menu and page routes"),
+      basicNav("Homepage", `${h}home`, `${s}/homepage`, "Edit your homepage"),
       basicNav("Blog", `${h}document-text`, `${s}/blog`, "View/Edit your blog"),
       basicNav("Contact Form", `${h}pencil-square`, `${s}/contact-form`, "View/Edit your contact form"),
       basicNav("Additional Pages", `${h}document-duplicate`, `${s}/additional-pages`, "View/Edit your additional pages"),

@@ -34,14 +34,16 @@ export default defineEventHandler(async event => {
   delete pageBody.users
   delete pageBody.pages
 
+  console.log('pageBody', pageBody)
+
   const [updatedPage] = await useDrizzle()
     .update(tables.pages)
     .set({
-      id: pageBody.id,
-      title: pageBody.title,
-      slug: pageBody.path,
-      content: pageBody.content,
-      createdAt: new Date(pageBody.createdAt),
+      id: pageBody.id || page.id,
+      title: pageBody.title || page.title,
+      slug: pageBody.path || page.slug,
+      content: pageBody.content || page.content,
+      createdAt: new Date(pageBody.createdAt || page.createdAt),
       updatedAt: new Date(),
     })
     .where(eq(tables.pages.id, pageId))

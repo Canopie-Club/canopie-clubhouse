@@ -32,7 +32,7 @@ export const ImageSelector = Node.create<ImageSelectorOptions>({
 
   inline: false,
 
-  content: 'block',
+  content: 'block*',
 
   // atom: true,
 

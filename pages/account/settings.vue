@@ -1,40 +1,54 @@
 <template>
     <LayoutProps title="Account Settings">
-      <UPageCard v-if="user" class="my-8">
-        <template #title>
-          Account Settings
-        </template>
+      <Card v-if="user" class="my-8">
+        <CardHeader>
+          <CardTitle>
+            Account Settings
+          </CardTitle>
+        </CardHeader>
   
-        <template #description>
+        <CardContent>
           <div class="profile-card flex flex-col gap-2">
 
 
             <!-- TODO: Add delete account -->
           </div>
-        </template>
+        </CardContent>
         
-      </UPageCard>
-      <UPageCard v-if="user" class="my-8">
-        <template #title>
-          Danger Zone
-        </template>
+      </Card>
+      <Card v-if="user" class="my-8">
+        <CardHeader>
+          <CardTitle>
+            Danger Zone
+          </CardTitle>
+        </CardHeader>
   
-        <template #description>
+        <CardContent>
           <div class="profile-card flex flex-col gap-2">
 
 
             <!-- TODO: Add delete account -->
           </div>
-        </template>
+        </CardContent>
         
-      </UPageCard>
+      </Card>
   
-      <UButton @click="() => (editProfile = !editProfile)">Edit Profile</UButton>
+      <Button @click="() => (editProfile = !editProfile)">Edit Profile</Button>
       
     </LayoutProps>
   </template>
   
   <script setup lang="ts">
+  import { Button } from "~/components/ui/button";
+  import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+  } from "~/components/ui/card";
+
   const user = useUser();
   
   const editProfile = ref(false);

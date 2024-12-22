@@ -6,19 +6,20 @@
         </UiCardLink>
       </div>
 
-      <UPageError
+      <PageError
         v-if="error"
         :code="error.statusCode"
         name="Site not found!"
         message="Please check that you're logged in and have access to this site."
       >
-      </UPageError>
+      </PageError>
     </UContainer>
   </UPageBody>
 </template>
 
 <script setup lang="ts">
 import compare from "just-compare";
+import { PageError } from "~/components/ui/custom";
 
 const siteId = useRoute().params.siteId;
 const sessionId = useSessionKey();

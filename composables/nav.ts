@@ -3,7 +3,7 @@ import { computed } from 'vue';
 export const useNavigation = () => {
     const sites = useSites();
 
-    console.log(sites.value)
+    // console.log(sites.value)
 
     return computed((): SiteLinkTree[] => {
         return [
