@@ -5,6 +5,7 @@
       'top-level': topLevel,
       'child-level': !topLevel,
       'has-children': hasChildren,
+      'coming-soon': item.comingSoon,
     }"
   >
     <NuxtLink
@@ -27,12 +28,7 @@
       </div>
     </NuxtLink>
     <ul v-if="item.children && isOpen" class="m-2 mr-0">
-      <NavItem
-        v-for="child in item.children"
-        :key="child.title"
-        :item="child"
-        :size="size"
-      />
+      <NavItem v-for="child in item.children" :key="child.title" :item="child" :size="size" />
     </ul>
   </li>
 </template>
@@ -57,14 +53,13 @@ const props = withDefaults(
 
 const hasChildren = props.item.children && props.item.children.length > 0;
 
-
-const sizeArray = ['xs', 'sm', 'md', 'lg']
+const sizeArray = ["xs", "sm", "md", "lg"];
 
 const computedSize = computed(() => {
   if (!props.topLevel || props.evenSizing) return props.size;
-  const index = sizeArray.indexOf(props.size) + 1
-  const size = sizeArray[index]
-  return size ?? props.size
+  const index = sizeArray.indexOf(props.size) + 1;
+  const size = sizeArray[index];
+  return size ?? props.size;
 });
 
 const isOpen = ref(false);
@@ -111,7 +106,6 @@ const toggleItem = () => {
     @apply border-l pl-4 border-gray-200 relative;
     // padding-left: calc(1rem + 1px);
 
-
     &:hover::before {
       @apply content-[''] absolute left-[-1px] top-0 h-full w-[1px] bg-stone-500;
       height: calc(100% - 0.5rem);
@@ -123,6 +117,30 @@ const toggleItem = () => {
 
     &:last-child {
       @apply pb-0;
+    }
+  }
+
+  &.coming-soon {
+    @apply line-through text-gray-200;
+
+    .nav-item-link {
+      @apply line-through text-slate-400;
+
+      &:hover {
+        @apply line-through text-slate-400;
+      }
+
+      .link:hover {
+        @apply text-slate-400;
+      }
+    }
+
+    &.child-level {
+      &:hover::before {
+        // @apply content-[''];
+        @apply content-[''] absolute left-[-1px] top-0 h-full w-[1px] bg-slate-400;
+        height: calc(100% - 0.5rem);
+      }
     }
   }
 

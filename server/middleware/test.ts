@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
 	const { subdomain, domain } = parseSubdomain(getRequestURL(event))
 
-	const pageInfo = await $fetch(`${apiRoot}/api/client/`, {
+	const pageInfo = await $fetch(`/api/client/`, {
 		query: {
 			subdomain,
 			domain,
@@ -30,6 +30,8 @@ export default defineEventHandler(async (event) => {
 	})
 
 	console.log("PAGE INFO")
+    const data = pageInfo?.data;
+    const pages = data?.pages;
 	console.log(pageInfo?.data)
 
 	// console.log("ROUTE", subdomain, domain)
