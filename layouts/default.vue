@@ -1,12 +1,12 @@
 <template>
   <div>
-    <LayoutHeaderShad :navMenu="{mainNav: nav, secondaryNav: []}">
+    <LayoutHeader :navMenu="{mainNav: nav, secondaryNav: []}">
       <template #content>
         <div class="p-8">
           <slot />
         </div>
       </template>
-    </LayoutHeaderShad>
+    </LayoutHeader>
     <div id="explorer"></div>
     <div id="popup"></div>
   </div>

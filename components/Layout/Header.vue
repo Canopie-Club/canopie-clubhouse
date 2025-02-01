@@ -7,7 +7,7 @@
           <span class="sr-only">Open sidebar</span>
         </Button>
 
-          <NuxtLink to="/">
+          <NuxtLink to="/" class="flex items-center justify-center">
            <Logo class="h-6 w-auto cursor-pointer" />
          </NuxtLink>
         <!-- <Button variant="ghost">Sites</Button>
@@ -17,7 +17,7 @@
 
     <div class="bottom flex h-full dark:bg-gray-900">
       <!-- <div class="h-screen"> -->
-      <aside v-if="props.navMenu" class="aside">
+      <aside v-if="props.navMenu" class="asid bg-textured">
         <HeaderShadInner :navMenu="props.navMenu" />
       </aside>
 
@@ -28,7 +28,7 @@
       </Sheet>
       <!-- </div> -->
 
-      <main class="flex-1 overflow-y-auto">
+      <main class="flex-1 overflow-y-auto bg-textured bg-linen-50">
         <slot name="content" />
       </main>
     </div>
@@ -80,9 +80,8 @@ const topHeight = computed(() => {
   }
 
   .aside {
-    @apply hidden md:flex md:flex-col md:w-72 bg-white dark:bg-gray-800 overflow-y-auto px-4;
-    // @apply border-r border-gray-200 dark:border-gray-700;
-    // @apply shadow-inner bg-blue-200;
+    @apply hidden md:flex md:flex-col md:w-72 overflow-y-auto px-4;
+    // @apply bg-white dark:bg-gray-800;
     @apply shadow-md;
 
     // box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.1);

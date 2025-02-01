@@ -6,7 +6,7 @@
       </div>
     </div> -->
     <header
-      class="header dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center"
+      class="header dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center bg-textured"
     >
   
         <!-- <h1 class="text-xl font-bold text-orange-500">CanopieClub.house</h1> -->
@@ -30,7 +30,8 @@ import { SunIcon } from "lucide-vue-next";
 
 <style lang="scss" scoped>
 .header {
-  @apply backdrop-blur-sm bg-white/75 dark:bg-gray-800/75;
+  @apply backdrop-blur-sm bg-linen-50;
+  // @apply bg-white/75 dark:bg-gray-800/75;
   position: sticky;
   top: 0;
   left: 0;

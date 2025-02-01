@@ -1,7 +1,7 @@
 <template>
     <div>
 
-  <LayoutHeaderShad>
+  <LayoutHeader>
     <template #content>
       <div class="p-8">
         <slot />
@@ -10,7 +10,7 @@
     <template #footer>
       <LayoutFooter />
     </template>
-  </LayoutHeaderShad>
+  </LayoutHeader>
       <!-- <LayoutHeader />
       <UMain>
         <UContainer>
