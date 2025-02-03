@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HeaderShadTop ref="headerShadTop" :navMenu="props.navMenu" @open-sheet="isOpen = true">
+    <HeaderTop ref="headerTop" :navMenu="props.navMenu" @open-sheet="isOpen = true">
       <template #left>
         <Button variant="ghost" size="icon" class="md:hidden" @click="isOpen = true">
           <MenuIcon class="h-6 w-6" />
@@ -13,22 +13,22 @@
         <!-- <Button variant="ghost">Sites</Button>
         <Button variant="ghost">Logout</Button> -->
       </template>
-    </HeaderShadTop>
+    </HeaderTop>
 
     <div class="bottom flex h-full dark:bg-gray-900">
       <!-- <div class="h-screen"> -->
-      <aside v-if="props.navMenu" class="asid bg-textured">
-        <HeaderShadInner :navMenu="props.navMenu" />
+      <aside v-if="props.navMenu" class="aside bg-textured">
+        <HeaderInner :navMenu="props.navMenu" />
       </aside>
 
-      <Sheet v-if="props.navMenu" v-model:open="isOpen">
+      <Sheet v-if="props.navMenu" v-model:open="isOpen" class="bg-linen-50 bg-textured">
         <SheetContent side="left" class="w-[300px] sm:w-[400px]">
-          <HeaderShadInner :navMenu="props.navMenu" />
+          <HeaderInner :navMenu="props.navMenu" />
         </SheetContent>
       </Sheet>
       <!-- </div> -->
 
-      <main class="flex-1 overflow-y-auto bg-textured bg-linen-50">
+      <main class="flex-1 overflow-y-auto textured bg-linen-50">
         <slot name="content" />
       </main>
     </div>
@@ -39,13 +39,13 @@
 import { ref, type ComponentPublicInstance } from "vue";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { HomeIcon, MenuIcon } from "lucide-vue-next";
-import HeaderShadInner from "./HeaderShadInner.vue";
-import HeaderShadTop from "./HeaderShadTop.vue";
+import HeaderInner from "./HeaderInner.vue";
+import HeaderTop from "./HeaderTop.vue";
 import { useElementBounding } from "@vueuse/core";
 
-const headerShadTop = ref<ComponentPublicInstance | null>(null);
+const headerTop = ref<ComponentPublicInstance | null>(null);
 
-const { height } = useElementBounding(headerShadTop);
+const { height } = useElementBounding(headerTop);
 
 interface NavMenu {
   mainNav: SiteLinkTree[];
@@ -81,8 +81,10 @@ const topHeight = computed(() => {
 
   .aside {
     @apply hidden md:flex md:flex-col md:w-72 overflow-y-auto px-4;
+    @apply bg-linen-50;
     // @apply bg-white dark:bg-gray-800;
-    @apply shadow-md;
+    @apply shadow-md shadow-black/15;
+    @apply relative z-20;
 
     // box-shadow: inset -10px 0 10px -10px rgba(0, 0, 0, 0.1);
   }

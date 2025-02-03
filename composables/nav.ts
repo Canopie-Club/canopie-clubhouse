@@ -31,11 +31,13 @@ export const useNavigation = () => {
                         label: "Settings",
                         icon: "i-heroicons-cog",
                         to: "/account/settings",
+                        comingSoon: true,
                     },
                     {
                         label: "Create New Site",
                         icon: "i-heroicons-plus",
                         to: "/create/site",
+                        comingSoon: true,
                     },
                 ],
             },

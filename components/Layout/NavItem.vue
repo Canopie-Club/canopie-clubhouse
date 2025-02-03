@@ -9,7 +9,7 @@
     }"
   >
     <NuxtLink
-      :to="item.to"
+      :to="item.comingSoon ? undefined : item.to"
       :class="`size-${computedSize} ${hasChildren ? 'has-children' : ''}`"
       class="nav-item-link w-full justify-start pb-2"
     >
@@ -121,10 +121,11 @@ const toggleItem = () => {
   }
 
   &.coming-soon {
-    @apply line-through text-gray-200;
+    @apply line-through text-gray-200 cursor-not-allowed;
 
     .nav-item-link {
-      @apply line-through text-slate-400;
+      @apply line-through text-slate-400 cursor-not-allowed;
+      pointer-events: none;
 
       &:hover {
         @apply line-through text-slate-400;

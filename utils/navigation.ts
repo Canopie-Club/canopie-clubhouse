@@ -32,6 +32,7 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
 
   const newsletter = site.extras.includes("NEWSLETTER") ? [
     basicNav("Newsletter", `${h}envelope`, `${s}/newsletter`, "View/Edit your newsletter", {
+      comingSoon: true,
       children: [
         basicNav("Contacts", `${h}users`, `${s}/newsletter/contacts`, "Manage your newsletter contacts"),
         basicNav("Letters", `${h}envelope-open`, `${s}/newsletter/letters`, "Create and manage newsletter campaigns"),
@@ -52,8 +53,12 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
       ]
     }),
     ...newsletter,
-    basicNav("Design", `${h}paint-brush`, `${s}/design`, "View/Edit your design"),
-    basicNav("Settings", `${h}cog`, `${s}/settings`, "View/Edit your settings"),
+    basicNav("Design", `${h}paint-brush`, `${s}/design`, "View/Edit your design", {
+      comingSoon: true
+    }),
+    basicNav("Settings", `${h}cog`, `${s}/settings`, "View/Edit your settings", {
+      comingSoon: true
+    }),
   ]
 
 
@@ -72,17 +77,25 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
       }
 
       return [
-        basicNav("Discography", `${h}musical-note`, `${s}/discography`, "View/Edit your discography"),
-        basicNav("Events", `${h}calendar`, `${s}/events`, "View/Edit your events"),
+        basicNav("Discography", `${h}musical-note`, `${s}/discography`, "View/Edit your discography", {
+          comingSoon: true
+        }),
+        basicNav("Events", `${h}calendar`, `${s}/events`, "View/Edit your events", {
+          comingSoon: true
+        }),
         ...ticketing,
         ...d,
       ];
     case "RECORD_LABEL":
 
       return [
-        basicNav("Artists", `${h}users`, `${s}/artists`, "View/Edit your artists"),
+        basicNav("Artists", `${h}users`, `${s}/artists`, "View/Edit your artists", {
+          comingSoon: true
+        }),
         ...ticketing,
-        basicNav("Events", `${h}calendar`, `${s}/events`, "View/Edit your events"),
+        basicNav("Events", `${h}calendar`, `${s}/events`, "View/Edit your events", {
+          comingSoon: true
+        }),
         ...defaults,
       ];
     default:
