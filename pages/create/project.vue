@@ -5,11 +5,11 @@
     @step-change="onStepChange"
   >
     <Step :step-number="1" :before-next="checkSiteInfo">
-      <h2 class="text-2xl font-bold mb-4">Site Info</h2>
+      <h2 class="text-2xl font-bold mb-4">Project Info</h2>
       <form @submit.prevent="submitSiteInfo" class="space-y-4">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
-            <FormLabel>The name of your site</FormLabel>
+            <FormLabel>The name of your project</FormLabel>
             <FormControl>
               <Input v-bind="componentField" />
             </FormControl>
@@ -18,10 +18,12 @@
         </FormField>
         <FormField v-slot="{ componentField }" name="siteId">
           <FormItem>
-            <FormLabel>The ID of your site</FormLabel>
+            <FormLabel>The site ID</FormLabel>
             <FormDescription class="text-xs">
               This is the URL of your site on canopie.club (e.g.
-              <span class="font-mono">[site-id].canopie.club</span>). <br />
+              <span class="font-mono">[site-id].canopie.club</span>). If you plan on purchasing a
+              domain name, or have already, this does not have to be the same as that domain
+              name.<br />
               It must be unique and cannot be changed later.
             </FormDescription>
             <FormControl>

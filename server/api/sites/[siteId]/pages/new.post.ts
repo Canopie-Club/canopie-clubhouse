@@ -18,7 +18,7 @@ export default defineEventHandler(async event => {
     throw createError({ statusCode: 401, statusMessage: 'Site not found' })
   }
 
-  if (!pageBody.title || !pageBody.path || !pageBody.content) {
+  if (!pageBody.title || !pageBody.slug) {
     throw createError({ statusCode: 400, statusMessage: 'Missing required fields' })
   }
 
@@ -26,8 +26,8 @@ export default defineEventHandler(async event => {
     id: crypto.randomUUID(),
     siteId: siteId,
     title: pageBody.title,
-    slug: pageBody.path,
-    content: pageBody.content,
+    slug: pageBody.slug,
+    content: pageBody.content || '',
   })
 
   if (!page) {

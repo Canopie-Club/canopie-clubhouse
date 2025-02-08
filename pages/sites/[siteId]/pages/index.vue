@@ -110,6 +110,8 @@ const save = async () => {
 
 onMounted(() => {
   fetchedSite.value = { ...site.value, name: site.value?.name ?? "" };
+
+  console.log(fetchedSite.value)
 });
 </script>
 

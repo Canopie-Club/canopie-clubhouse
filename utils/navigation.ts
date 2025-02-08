@@ -1,4 +1,3 @@
-import type { NavigationTree } from '@nuxt/ui-pro/types';
 import clone from 'just-clone';
 import type { SiteSummary, SiteType } from '~/assets/types/db';
 
@@ -43,19 +42,17 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
   ] : []
 
   const defaults: SiteLinkTree[] = [
-    basicNav("Pages", `${h}document`, `${s}/pages`, "Edit your site's menu and page routes", {
+    basicNav("Website", `${h}document`, `${s}/site`, "Edit your site's menu and page routes", {
       children: [
-        basicNav("Page Routes", `${h}map`, `${s}/routes`, "Edit your site's menu and page routes"),
-        basicNav("Homepage", `${h}home`, `${s}/homepage`, "Edit your homepage"),
-        basicNav("Blog", `${h}document-text`, `${s}/blog`, "View/Edit your blog"),
-        basicNav("Contact Form", `${h}pencil-square`, `${s}/contact-form`, "View/Edit your contact form"),
-        basicNav("Additional Pages", `${h}document-duplicate`, `${s}/additional-pages`, "View/Edit your additional pages"),
+        basicNav("Page Routes", `${h}map`, `${s}/site/routes`, "Edit your site's menu and page routes", { comingSoon: true }),
+        // basicNav("Homepage", `${h}home`, `${s}/homepage`, "Edit your homepage"),
+        // basicNav("Blog", `${h}document-text`, `${s}/blog`, "View/Edit your blog"),
+        // basicNav("Contact Form", `${h}pencil-square`, `${s}/contact-form`, "View/Edit your contact form"),
+        basicNav("Pages", `${h}document-duplicate`, `${s}/site/pages`, "View/Edit your site’s pages"),
+        basicNav("Design", `${h}paint-brush`, `${s}/site/design`, "View/Edit your design", { comingSoon: true }),
       ]
     }),
     ...newsletter,
-    basicNav("Design", `${h}paint-brush`, `${s}/design`, "View/Edit your design", {
-      comingSoon: true
-    }),
     basicNav("Settings", `${h}cog`, `${s}/settings`, "View/Edit your settings", {
       comingSoon: true
     }),

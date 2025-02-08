@@ -34,9 +34,9 @@ export const useNavigation = () => {
                         comingSoon: true,
                     },
                     {
-                        label: "Create New Site",
+                        label: "Create New Project",
                         icon: "i-heroicons-plus",
-                        to: "/create/site",
+                        to: "/create/project",
                         comingSoon: true,
                     },
                 ],
