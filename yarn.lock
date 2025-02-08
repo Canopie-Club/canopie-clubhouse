@@ -9469,7 +9469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lib0@npm:^0.2.99":
+"lib0@npm:^0.2.42, lib0@npm:^0.2.85, lib0@npm:^0.2.99":
   version: 0.2.99
   resolution: "lib0@npm:0.2.99"
   dependencies:
@@ -11047,6 +11047,8 @@ __metadata:
     vue-multiselect: "npm:^3.0.0"
     wrangler: "npm:^3.73.0"
     xml2js: "npm:^0.6.2"
+    y-prosemirror: "npm:^1.2.15"
+    y-protocols: "npm:^1.0.6"
     yjs: "npm:^13.6.19"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -15101,6 +15103,32 @@ __metadata:
   bin:
     xss: bin/xss
   checksum: 10c0/9b31bee62a208f78e2b7bc8154e3ee87d980f4661dc4ab850ce6f4de7bc50eb152f0bdc13fa759ff8ab6d9bfdf8c0d79cf9f6f86249872b92181912309bccd08
+  languageName: node
+  linkType: hard
+
+"y-prosemirror@npm:^1.2.15":
+  version: 1.2.15
+  resolution: "y-prosemirror@npm:1.2.15"
+  dependencies:
+    lib0: "npm:^0.2.42"
+  peerDependencies:
+    prosemirror-model: ^1.7.1
+    prosemirror-state: ^1.2.3
+    prosemirror-view: ^1.9.10
+    y-protocols: ^1.0.1
+    yjs: ^13.5.38
+  checksum: 10c0/0f795e765af6bd0d3f8e614ac5ecc2d1c1e491a5a4e565ad563d4b0112882bf05faeb430a7be2365930b3488199611db60bbadd18525a023f0d6bd8f9a3e9f5a
+  languageName: node
+  linkType: hard
+
+"y-protocols@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "y-protocols@npm:1.0.6"
+  dependencies:
+    lib0: "npm:^0.2.85"
+  peerDependencies:
+    yjs: ^13.0.0
+  checksum: 10c0/fae7d63d4609e75eac8114320aa3581311993cd0c1b7ac03d13dc30c9a95d7b1680e4500786bb417c1fb3d11a69e1bed3e50d08e15febde9b8abf70f133eb917
   languageName: node
   linkType: hard
 
