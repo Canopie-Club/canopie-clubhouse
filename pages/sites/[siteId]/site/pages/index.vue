@@ -1,5 +1,7 @@
 <template>
   <div class="pages-index">
+    <RouteBack label="Back to site" />
+
     <div class="flex flex-row justify-between items-center">
       <h1 class="text-2xl font-bold">Pages</h1>
       <NuxtLink :to="`/sites/${siteId}/site/pages/new`">

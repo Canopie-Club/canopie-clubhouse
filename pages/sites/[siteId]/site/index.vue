@@ -1,11 +1,6 @@
 <template>
     <div>
-      <div class="mb-6">
-        <Button variant="ghost" size="sm" @click="$router.push(`/`)">
-          <Icon name="i-heroicons-arrow-left" class="mr-2 h-4 w-4" />
-          Back home
-        </Button>
-      </div>
+      <RouteBack :label="`Back to ${site?.name ?? 'project'}`" />
   
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <UiCardLink v-for="(module, index) in navigation" :key="index" v-bind="module"> </UiCardLink>
