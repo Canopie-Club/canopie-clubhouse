@@ -11,6 +11,7 @@ export interface ImageSelectorOptions {
    * @example { class: 'foo' }
    */
   HTMLAttributes: Record<string, any>
+  siteId: string
 }
 
 declare module '@tiptap/core' {
@@ -54,6 +55,9 @@ export const ImageSelector = Node.create<ImageSelectorOptions>({
     return {
       'tt-src': {
         default: '',
+      },
+      siteId: {
+        default: this.options?.siteId || '',
       },
     }
   },

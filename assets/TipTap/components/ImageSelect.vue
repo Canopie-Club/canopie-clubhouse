@@ -9,7 +9,7 @@
       <div class="explorer-container" :class="{ 'pointer-events-none': !explorerOpen }">
         <Explorer
           v-model:open="explorerOpen"
-          site-id="thedukeofnorfolk"
+          :site-id="siteId"
           :confirm-selection="confirmSelection"
           show-footer
           closable
@@ -52,6 +52,9 @@ const confirmSelection = (path: string | null) => {
 
   explorerOpen.value = false;
 };
+
+const siteId = computed(() => props.node.attrs.siteId);
+
 </script>
 
 <style lang="scss" scoped>

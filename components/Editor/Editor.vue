@@ -66,11 +66,13 @@ const props = withDefaults(
     contentMode?: "json" | "html";
     bordered?: boolean;
     maxHeight?: string;
+    siteId: string;
   }>(),
   {
     contentMode: "json",
     bordered: false,
     maxHeight: "500px",
+    siteId: "",
   }
 );
 
@@ -119,7 +121,9 @@ const editor = useEditor({
     FontFamily,
     TextStyle,
     // CustomEnterBehavior,
-    ImageSelector,
+    ImageSelector.configure({
+      siteId: props.siteId,
+    }),
     NodeRange.configure({
       // allow to select only on depth 0
       // depth: 0,
