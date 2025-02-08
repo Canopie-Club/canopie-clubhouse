@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!-- <div
     class="footer-bar flex justify-between items-center"
     :class="[user ? 'logged-in' : 'anon']"
   >
@@ -14,43 +14,27 @@
             value-attribute="code"
             placeholder="Select a Language"
           ></USelectMenu>
-
-          <!-- <Select v-model="language">
-            <SelectTrigger>
-              <SelectValue placeholder="Select a Language" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Languages</SelectLabel>
-                <SelectItem
-                  v-for="loc in locales"
-                  :value="loc.code"
-                  :key="loc.code"
-                >
-                  {{ loc.name || loc.code }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select> -->
         </div>
       </div>
     </UContainer>
-  </div>
-  <!-- {{ language }} -->
+  </div> -->
+  
+  <UFooter class="">
+      <!-- {{ language }} -->
+      <template #right>
+        <USelectMenu
+          v-model="language"
+          :options="locales"
+          option-attribute="name"
+          value-attribute="code"
+          placeholder="Select a Language"
+        ></USelectMenu>
+      </template>
+    </UFooter>
 </template>
 
 <script setup lang="ts">
-const user = useUser();
 const { locale, setLocale, locales } = useI18n();
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 const language = computed({
   get: () => locale.value,
@@ -62,6 +46,7 @@ const language = computed({
 
 <style lang="scss" scoped>
 .footer-bar {
-  @apply bg-gray-50 border-t-2 border-gray-100;
+  @apply border-gray-100 border-t-2;
+  // @apply bg-gray-50 border-t-2 border-gray-100;
 }
 </style>

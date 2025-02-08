@@ -1,9 +1,9 @@
 <template>
     <div>
       <div v-if="page">
-        <Button class="mb-4" variant="outline" @click="goBack">
+        <UButton class="mb-4" variant="outline" @click="goBack">
           <- Back
-        </Button>
+        </UButton>
         <h1 class="mb-4">{{ page.title }}</h1>
         <div class="flex flex-col gap-4">
           <UInput v-model="pageTitle" />
@@ -33,8 +33,6 @@
   
   <script setup lang="ts">
   import compare from "just-compare";
-  import { Textarea } from '@/components/ui/textarea'
-  import { Button } from "@/components/ui/button";
   
   const templates = [
     {

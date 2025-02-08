@@ -1,65 +1,25 @@
 <template>
   <div>
-    <div v-if="site">
-      <h1 class="mb-4">{{ site.name }}</h1>
-      <div class="flex flex-col gap-4">
-        <UInput v-model="siteName" />
-        <USelectMenu
-          v-model="siteTemplate"
-          :options="templates"
-          placeholder="Select a Template"
-          option-attribute="name"
-          value-attribute="value"
-          :loading="loading"
-        ></USelectMenu>
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          <a
-            class="bg-amber-100 rounded hover:bg-amber-200 p-4"
-            v-for="page in site.pages"
-            :key="page.id"
-            :href="`/sites/${siteId}/pages/${page.id}`"
-          >
-            {{ page.title }}
-          </a>
-          <a
-            class="bg-orange-100 rounded hover:bg-orange-200 text-orange-800 p-4"
-            :href="`/sites/${siteId}/pages/new`"
-          >
-            + Add Page
-          </a>
-        </div>
-        <UButton block color="amber" :disabled="!changesPresent" @click="save">Save</UButton>
-      </div>
+    <RouteBack label="Back home" :depth="2" />
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <UiCardLink v-for="(module, index) in navigation" :key="index" v-bind="module"> </UiCardLink>
     </div>
-    <div v-if="error">
-      <h1>Site not found!</h1>
-      <p>
-        This site could not be found or retrieved. Please check that you're
-        logged in and have access to this site.
-      </p>
-    </div>
+
+    <PageError
+      v-if="error"
+      :code="error.statusCode"
+      name="Site not found!"
+      message="Please check that you're logged in and have access to this site."
+    >
+    </PageError>
   </div>
 </template>
 
 <script setup lang="ts">
 import compare from "just-compare";
-
-const templates = [
-  {
-    name: "Default",
-    value: "default",
-  },
-  {
-    name: "Alternate",
-    value: "alternate",
-  },
-  {
-    name: "Single Page App",
-    value: "spa",
-  },
-];
-
-const trackedKeys = ["name", "template"] as const;
+import { Button } from "~/components/ui/button";
+import { PageError } from "~/components/ui/custom";
 
 const siteId = useRoute().params.siteId;
 const sessionId = useSessionKey();
@@ -75,6 +35,35 @@ const {
     Authorization: `Bearer ${sessionId.value}`,
   },
 });
+
+const globalNavigation = useNavigation();
+const navigation = computed((): SiteLinkTree[] => {
+  return (globalNavigation.value.find((item) => item.to === `/sites/${siteId}`)?.children ||
+    []) as SiteLinkTree[];
+});
+
+const modules = [
+  // ...(sites.value || []).map((site) => ({
+  //   title: site.name ?? "Untitled Site",
+  //   description: `Review or edit the ${site.name} site.`,
+  //   icon: "i-heroicons-map",
+  //   to: `/sites/${site.id}`,
+  // })),
+  // {
+  //   title: "Account",
+  //   description: "Edit your account information.",
+  //   to: "/account/profile",
+  //   icon: "i-heroicons-user",
+  // },
+  // {
+  //   title: "Settings",
+  //   description: "Edit your account settings.",
+  //   to: "/account/settings",
+  //   icon: "i-heroicons-cog",
+  // },
+];
+
+const trackedKeys = ["name", "template"] as const;
 
 const siteName = computed({
   get: () => site.value?.name ?? "",
