@@ -1,9 +1,9 @@
 <template>
-  <NuxtLink :to="to || href">
-    <Card class="card-link">
+  <NuxtLink :to="comingSoon ? undefined : to || href">
+    <Card class="card-link" :class="{ 'coming-soon': comingSoon }">
       <div class="decoration"></div>
       <CardHeader>
-        <Icon v-if="icon" :icon="icon.replace(/^i-/, '')" class="w-10 h-10 text-primary" />
+        <Icon v-if="icon" :icon="icon.replace(/^i-/, '')" class="icon" />
         <slot name="header" />
       </CardHeader>
       <CardContent>
@@ -42,6 +42,7 @@ defineProps<{
   footer?: string;
   to?: string;
   href?: string;
+  comingSoon?: boolean;
 }>();
 </script>
 
@@ -49,15 +50,37 @@ defineProps<{
 .card-link {
   @apply hover:bg-stone-50 box-content border-0 relative;
 
+  .icon {
+    @apply w-10 h-10 text-olive-400;
+  }
+
   &:hover {
     .decoration {
-      @apply border-2 border-primary;
+      @apply border-2 border-olive-400;
     }
   }
 
   .decoration {
     @apply border border-gray-200;
     @apply absolute top-0 left-0 w-full h-full rounded-xl;
+  }
+
+  &.coming-soon {
+    @apply bg-linen-50 cursor-not-allowed;
+
+    @apply text-stone-400;
+
+    p {
+      @apply text-stone-400;
+    }
+
+    .icon {
+      @apply text-stone-300;
+    }
+
+    .decoration {
+      @apply border-2 border-stone-200;
+    }
   }
 }
 </style>
