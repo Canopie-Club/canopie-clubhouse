@@ -1,16 +1,35 @@
 <template>
-  <div class="template default">
-    <LayoutHeader />
-    <div class="template-content grid min-h-[calc(100vh-5rem)]">
-      <UContainer class="w-full">
-        <slot></slot>
-      </UContainer>
-      <LayoutFooter />
-    </div>
+  <div>
+    <LayoutHeader :navMenu="{mainNav: nav, secondaryNav: []}">
+      <template #content>
+        <div class="p-8">
+          <slot />
+        </div>
+      </template>
+    </LayoutHeader>
+    <div id="explorer"></div>
+    <div id="popup"></div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const nav = useNavigation()
+const appUrl = useRuntimeConfig().app.url;
+const appConfig = useAppConfig();
+
+useSeoMeta({
+  ogImage: `${appUrl}/images/og.png`,
+  twitterImage: `${appUrl}/images/og.png`,
+  twitterCard: "summary_large_image",
+});
+
+onBeforeMount(() => {
+  // TODO: Figure out how to properly set this in the config
+  if (appConfig.ui.primary !== "amber") appConfig.ui.primary = "amber";
+  if (appConfig.ui.gray !== "stone") appConfig.ui.gray = "stone";
+});
+</script>
 
 <style lang="scss">
 .template {
@@ -18,7 +37,7 @@
   line-height: 1.6;
   color: #333;
   // max-width: 800px;
-  margin: 0 auto;
+  // margin: 0 auto;
 
   h1 {
     @apply text-2xl font-bold text-amber-800;
@@ -35,13 +54,6 @@
       @apply text-amber-700;
     }
   }
-
-  // ul,
-  // ol {
-  //   @apply list-disc list-inside;
-  //   @apply mb-4;
-  //   @apply pl-4;
-  // }
 
   img {
     @apply max-w-full h-auto;

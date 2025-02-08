@@ -1,50 +1,36 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import { useDrizzle, tables, eq } from '#common/server/utils/drizzle'
+import { successCatcher } from '#common/server/utils/general'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, getRouterParam, createError } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const siteId = getRouterParam(event, 'siteId')
+  const pageId = getRouterParam(event, 'pageId')
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const sessionId = authHeader.split(' ')[1]
-    const siteId = getRouterParam(event, 'siteId')
-    const pageId = getRouterParam(event, 'pageId')
+  if (!pageId) {
+    throw createError({ statusCode: 400, statusMessage: 'Page ID is required' })
+  }
 
-    console.log(sessionId)
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
 
-    const sites = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        include: {
-                            site: true
-                        }
-                    }
-                }
-            }
-        }
-    })
+  const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
 
-    if (!sites) {
-        throw new Error('User not found')
-    }
+  if (!result.success) {
+    throw createError({ statusCode: 401, statusMessage: result.message })
+  }
 
-    if (!sites.user.sites.some(site => site.siteId === siteId)) {
-        throw new Error('User not in site')
-    }
+  const sites = result.data
 
-    const page = await prisma.page.delete({
-        where: {
-            id: pageId,
-        },
-    })
+  const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
 
-    if (!page) {
-        throw new Error('Site not found')
-    }
+  if (!page) {
+    throw createError({ statusCode: 404, statusMessage: 'Page not found' })
+  }
 
-    return page
+  await useDrizzle().delete(tables.pages).where(eq(tables.pages.id, pageId))
+
+  return page
 })

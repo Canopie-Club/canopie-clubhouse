@@ -1,53 +1,31 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import { useDrizzle, tables, eq } from '#common/server/utils/drizzle'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, createError, readBody, getRouterParam } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const siteBody = await readBody(event)
+  const siteId = getRouterParam(event, 'siteId')
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const siteBody = await readBody(event)
-    const sessionId = authHeader.split(' ')[1]
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
 
-    console.log(siteBody, sessionId)
+  const [site] = await userSite(sessionId, siteId)
 
-    const sites = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        select: {
-                            siteId: true
-                        }
-                    }
-                }
-            }
-        }
-    })
+  if (!site) {
+    throw createError({ statusCode: 401, statusMessage: 'Site not found' })
+  }
 
-    if (!sites) {
-        throw new Error('User not found')
-    }
+  delete siteBody.pages
+  delete siteBody.createdAt
+  siteBody.updatedAt = new Date()
 
-    if (!sites.user.sites.some(site => site.siteId === siteBody.id)) {
-        throw new Error('User not in site')
-    }
+  const [updatedSite] = await useDrizzle()
+    .update(tables.sites)
+    .set(siteBody)
+    .where(eq(tables.sites.id, siteId))
+    .returning()
 
-    delete siteBody.users;
-    delete siteBody.pages;
-    
-    const site = await prisma.site.update({
-        where: {
-            id: siteBody.id,
-        },
-        data: siteBody
-    })
-
-    if (!site) {
-        throw new Error('Site not found')
-    }
-
-    return site
+  return updatedSite
 })

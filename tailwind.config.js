@@ -1,86 +1,83 @@
-const animate = require("tailwindcss-animate")
+import toolboxConfig from '@canopie-club/toolbox/dist/runtime/common/tailwind.config.js'
+
+// TODO: Integrate the following into the toolbox config
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
-  safelist: ["dark"],
-  prefix: "",
-  
+  // Extend the toolbox configuration
+  presets: [toolboxConfig],
+  // ...toolboxConfig,
+  // You can add your own customizations here
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+        linen: {
+          '50': '#fbf6f1',
+          '100': '#f7ede4',
+          '200': '#ebd2bd',
+          '300': '#deb293',
+          '400': '#cf8c68',
+          '500': '#c5704a',
+          '600': '#b75c3f',
+          '700': '#984836',
+          '800': '#7b3d31',
+          '900': '#64332a',
+          '950': '#351915',
+          DEFAULT: '#f7ede4'
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+        olive: {
+          '50': '#f4f5f0',
+          '100': '#e6e8df',
+          '200': '#d0d4c2',
+          '300': '#b2b99d',
+          '400': '#969e7d',
+          '500': '#798360',
+          '600': '#5d664a',
+          '700': '#49503b',
+          '800': '#3d4232',
+          '900': '#353a2d',
+          '950': '#1b1d16',
+          DEFAULT: '#798360'
         },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+        snow: {
+          '50': '#eefbfd',
+          '100': '#d5f2f8',
+          '200': '#b0e5f1',
+          '300': '#79d1e7',
+          '400': '#3bb4d5',
+          '500': '#1f97bb',
+          '600': '#1d799d',
+          '700': '#1c5d79',
+          '800': '#215269',
+          '900': '#1f455a',
+          '950': '#0f2c3d',
+          DEFAULT: '#1c5d79'
         },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+        terracotta: {
+          '50': '#fef4f2',
+          '100': '#fde6e3',
+          '200': '#fcd2cc',
+          '300': '#f9b3a8',
+          '400': '#f38676',
+          '500': '#e85f4b',
+          '600': '#d5432d',
+          '700': '#b33522',
+          '800': '#9d3222',
+          '900': '#7b2d21',
+          '950': '#43130c',
+          DEFAULT: '#9d3222'
         },
       },
-      borderRadius: {
-      	xl: "calc(var(--radius) + 4px)",
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: 0 },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: 0 },
-        },
-        "collapsible-down": {
-          from: { height: 0 },
-          to: { height: 'var(--radix-collapsible-content-height)' },
-        },
-        "collapsible-up": {
-          from: { height: 'var(--radix-collapsible-content-height)' },
-          to: { height: 0 },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "collapsible-down": "collapsible-down 0.2s ease-in-out",
-        "collapsible-up": "collapsible-up 0.2s ease-in-out",
-      },
+      screens: {
+        'xxs': '320px',
+        'xs': '480px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'xl': '1280px',
+        '2xl': '1536px',
+      }
     },
   },
-  plugins: [animate],
+  // Add any additional plugins or configurations
 }

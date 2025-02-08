@@ -1,30 +1,33 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import { tables, useDrizzle, eq } from '#common/server/utils/drizzle'
+import { defineEventHandler, getQuery } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const { sessionKey } = getQuery(event)
 
-export default defineEventHandler(async (event) => {
-    const {sessionKey} = getQuery(event);
+  console.log(sessionKey)
 
-    console.log(sessionKey);
-
-    if (!sessionKey || typeof sessionKey !== 'string') return {
-        success: false,
-        message: 'Session key is required'
-    }
-
-    await prisma.userSession.delete({
-        where: {
-            id: sessionKey
-        }
-    }).catch((e) => {
-        return {
-            success: false,
-            message: 'Session key is invalid'
-        }
-    })
-
+  if (!sessionKey || typeof sessionKey !== 'string')
     return {
-        success: true
+      success: false,
+      message: 'Session key is required',
     }
+
+  const [session] = await useDrizzle()
+    .select()
+    .from(tables.userSessions)
+    .where(eq(tables.userSessions.id, sessionKey))
+    .limit(1)
+
+  if (!session) {
+    return {
+      success: false,
+      message: 'Session key is invalid',
+    }
+  }
+
+  await useDrizzle().delete(tables.userSessions).where(eq(tables.userSessions.id, sessionKey))
+
+  return {
+    success: true,
+  }
 })

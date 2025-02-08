@@ -1,59 +1,38 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import crypto from 'node:crypto'
+import { userSite } from '#common/server/utils/db.session'
+import { createPage } from '#common/server/utils/db.page'
+import { defineEventHandler, createError, readBody, getRouterParam } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const pageBody = await readBody(event)
+  const siteId = getRouterParam(event, 'siteId')
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const pageBody = await readBody(event)
-    const sessionId = authHeader.split(' ')[1]
-    const siteId = getRouterParam(event, 'siteId')
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
 
-    const sites = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        include: {
-                            site: true
-                        }
-                    }
-                }
-            }
-        }
-    })
+  const [site] = await userSite(sessionId, siteId)
 
-    if (!sites) {
-        throw new Error('User not found')
-    }
+  if (!site) {
+    throw createError({ statusCode: 401, statusMessage: 'Site not found' })
+  }
 
-    if (!sites.user.sites.some(site => site.siteId === siteId)) {
-        throw new Error('User not in site')
-    }
+  if (!pageBody.title || !pageBody.slug) {
+    throw createError({ statusCode: 400, statusMessage: 'Missing required fields' })
+  }
 
-    if (!pageBody.title || !pageBody.path || !pageBody.content) {
-        throw new Error('Missing required fields')
-    }
+  const page = await createPage({
+    id: crypto.randomUUID(),
+    siteId: siteId,
+    title: pageBody.title,
+    slug: pageBody.slug,
+    content: pageBody.content || '',
+  })
 
-    if (!siteId) {
-        throw new Error('Site not found')
-    }
-    
-    const page = await prisma.page.create({
-        data: {
-            siteId: siteId,
-            title: pageBody.title,
-            path: pageBody.path,
-            content: pageBody.content,
-        }
-    })
+  if (!page) {
+    throw createError({ statusCode: 500, statusMessage: 'Page not created' })
+  }
 
-    if (!page) {
-        throw new Error('Page not created')
-    }
-
-    return page
+  return page
 })

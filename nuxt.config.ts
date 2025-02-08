@@ -1,3 +1,7 @@
+import { defineNuxtConfig } from 'nuxt/config'
+import fs from 'fs'
+import path from 'path'
+
 // import { fileURLToPath } from 'node:url'
 // import { dirname, join } from 'node:path'
 //
@@ -8,29 +12,58 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   modules: [
-    "shadcn-nuxt",
     "@nuxt/image",
     "@nuxtjs/i18n",
     "@nuxtjs/mdc",
+    // "@nuxthub/core",
+    "@canopie-club/toolbox",
     "@nuxt/ui",
     "@nuxt/fonts",
-    "@vueuse/nuxt"
+    "@vueuse/nuxt",
+    "shadcn-nuxt"
   ],
+
+  components: [
+    {
+      path: '~/components/Editor',
+      pathPrefix: false,
+      extensions: ['.vue'],
+    },
+    {
+      path: '~/components/Explorer',
+      pathPrefix: false,
+      extensions: ['.vue'],
+    },
+    {
+      path: '~/components/ui',
+      pathPrefix: false,
+      extensions: ['.vue'],
+      prefix: 'Ui',
+    },
+    '~/components'
+  ],
+
+  ui: {
+    // global: true
+    // @ts-expect-error
+    primary: 'amber',
+    safelistColors: ['amber', 'stone']
+  },
+
+  uiPro: {
+
+  },
 
   nitro: {
     experimental: {
       openAPI: true,
+      tasks: true
     },
   },
-  
-  shadcn: {
-    prefix: "",
-    componentDir: "~/components/ui",
-  },
 
-  ui: {
-    primary: 'amber',
-    gray: 'cool'
+  hub: {
+    database: true,
+    blob: true
   },
 
   i18n: {
@@ -60,9 +93,9 @@ export default defineNuxtConfig({
     strategy: "no_prefix",
   },
 
-  // css: [
-  //   join(currentDir, './src/index.css'),
-  // ],
+  css: [
+    // '@canopie-club/toolbox/dist/runtime/common/app/assets/tailwind.css'
+  ],
 
   // components: [
   //   {
@@ -71,4 +104,31 @@ export default defineNuxtConfig({
   //     extensions: ['.vue', '.ts'],
   //   },
   // ]
+
+  vite: {
+    optimizeDeps: {
+      exclude: ['vee-validate']
+    },
+
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern',
+        },
+      },
+    },
+
+    plugins: [
+      // {
+      //   name: 'log-css-virtual-file',
+      //   transform(code, id) {
+      //     if (id.includes('virtual:nuxt') && id.endsWith('css.mjs')) {
+      //       // Optionally write to a file for easier inspection
+      //       fs.writeFileSync(path.join(process.cwd(), 'virtual-css-content.mjs'), code)
+      //     }
+      //     return null
+      //   }
+      // }
+    ]
+  }
 });

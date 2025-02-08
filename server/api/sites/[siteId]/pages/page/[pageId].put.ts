@@ -1,55 +1,53 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import { useDrizzle, tables, eq } from '#common/server/utils/drizzle'
+import { successCatcher } from '#common/server/utils/general'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, getRouterParam, readBody, createError } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const pageBody = await readBody(event)
+  const siteId = getRouterParam(event, 'siteId')
+  const pageId = getRouterParam(event, 'pageId')
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const pageBody = await readBody(event)
-    const sessionId = authHeader.split(' ')[1]
-    const siteId = getRouterParam(event, 'siteId')
-    const pageId = getRouterParam(event, 'pageId')
+  if (!pageId) {
+    throw createError({ statusCode: 400, statusMessage: 'Page ID is required' })
+  }
 
-    console.log(pageBody, sessionId)
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
 
-    const sites = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        include: {
-                            site: true
-                        }
-                    }
-                }
-            }
-        }
+  const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
+
+  if (!result.success) {
+    throw createError({ statusCode: 401, statusMessage: result.message })
+  }
+
+  const sites = result.data
+
+  const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
+
+  if (!page) {
+    throw createError({ statusCode: 404, statusMessage: 'Page not found' })
+  }
+
+  delete pageBody.users
+  delete pageBody.pages
+
+  console.log('pageBody', pageBody)
+
+  const [updatedPage] = await useDrizzle()
+    .update(tables.pages)
+    .set({
+      id: pageBody.id || page.id,
+      title: pageBody.title || page.title,
+      slug: pageBody.path || page.slug,
+      content: pageBody.content || page.content,
+      createdAt: new Date(pageBody.createdAt || page.createdAt),
+      updatedAt: new Date(),
     })
+    .where(eq(tables.pages.id, pageId))
+    .returning()
 
-    if (!sites) {
-        throw new Error('User not found')
-    }
-
-    if (!sites.user.sites.some(site => site.siteId === siteId)) {
-        throw new Error('User not in site')
-    }
-
-    delete pageBody.users;
-    delete pageBody.pages;
-    
-    const site = await prisma.page.update({
-        where: {
-            id: pageId,
-        },
-        data: pageBody
-    })
-
-    if (!site) {
-        throw new Error('Site not found')
-    }
-
-    return site
+  return updatedPage
 })

@@ -1,41 +1,33 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import type { SiteExtraType } from '#common/server/types/db'
+import { useDrizzle, tables, eq } from '#common/server/utils/drizzle'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, createError, getRouterParam } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const siteId = getRouterParam(event, 'siteId')
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const sessionId = authHeader.split(' ')[1]
-    const siteId = getRouterParam(event, 'siteId')
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
 
-    const site = await prisma.site.findUnique({
-        where: {
-            id: siteId,
-        },
-        include: {
-            users: {
-                include: {
-                    user: {
-                        include: {
-                            UserSession: true
-                        }
-                    },
-                }
-            },
-            pages: true
-        }
-    })
+  const [site] = await userSite(sessionId, siteId)
 
-    if (!site) {
-        throw new Error('Site not found')
-    }
+  if (!site) {
+    throw createError({ statusCode: 401, statusMessage: 'Site not found' })
+  }
 
-    // Check if the user is in the site
-    const found = site?.users.some(user => user.user.UserSession.some(session => session.id === sessionId))
+  const extras: SiteExtraType[] = (
+    await useDrizzle()
+      .select({ extra: tables.siteExtras.extra })
+      .from(tables.siteExtras)
+      .where(eq(tables.siteExtras.siteId, site.id))
+  ).map(({ extra }) => extra as SiteExtraType)
 
-    if (!found) {
-        throw new Error('User not found in site')
-    }
+  const result = {
+    ...site,
+    extras: extras.filter(extra => extra !== null),
+  }
 
-    return site
+  return result
 })

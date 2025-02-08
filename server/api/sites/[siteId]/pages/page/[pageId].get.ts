@@ -1,46 +1,45 @@
-import { Page, PrismaClient } from '@canopie-club/prisma-client'
+import { successCatcher } from '#common/server/utils/general'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, getRouterParam, createError } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const siteId = getRouterParam(event, 'siteId')
+  const pageId = getRouterParam(event, 'pageId')
+  const query = getQuery(event)
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
-    const sessionId = authHeader.split(' ')[1]
-    const siteId = getRouterParam(event, 'siteId')
-    const pageId = getRouterParam(event, 'pageId')
+  if (!pageId) {
+    throw createError({ statusCode: 400, statusMessage: 'Page ID is required' })
+  }
 
-    const page = await prisma.page.findUnique({
-        where: {
-            id: pageId,
-        },
-        include: {
-            site: {
-                include: {
-                    users: {
-                        include: {
-                            user: {
-                                include: {
-                                    UserSession: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+  if (!siteId) {
+    throw createError({ statusCode: 400, statusMessage: 'Site ID is required' })
+  }
+
+  const result = await successCatcher(async () => await userSite(sessionId, siteId, pageId))
+
+  if (!result.success) {
+    throw createError({ statusCode: 401, statusMessage: result.message })
+  }
+
+  const sites = result.data
+
+  const page = sites?.flatMap(site => site.pages).find(page => page.id === pageId)
+
+  if (!page) {
+    const createMissingPage = query.createPage === 'true';
+    if (!createMissingPage) throw createError({ statusCode: 404, statusMessage: 'Page not found' })
+
+    const page = await createPage({
+      id: pageId,
+      siteId: siteId,
+      title: pageId,
+      slug: pageId,
+      content: '',
     })
+    
+    return page
+  }
 
-    if (!page) {
-        throw new Error('Page not found')
-    }
-
-    // Check if the user is in the site
-    const found = page?.site.users.some(user => user.user.UserSession.some(session => session.id === sessionId))
-
-    if (!found) {
-        throw new Error('User not found in site')
-    }
-
-    delete (page as any).site
-
-    return page as Page
+  return page
 })

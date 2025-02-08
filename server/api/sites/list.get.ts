@@ -1,55 +1,18 @@
-import { PrismaClient } from '@canopie-club/prisma-client'
-import bcrypt from 'bcryptjs'
+import { successCatcher } from '#common/server/utils/general'
+import { userSite } from '#common/server/utils/db.session'
+import { defineEventHandler, createError } from 'h3'
 
-const prisma = new PrismaClient()
+export default defineEventHandler(async event => {
+  const sessionId = getSessionId(event)
+  const {
+    success,
+    message,
+    data: sites,
+  } = await successCatcher(async () => await userSite(sessionId))
 
-export default defineEventHandler(async (event) => {
-    const authHeader = getRequestHeader(event, 'Authorization') || ''
+  if (!success) {
+    throw createError({ statusCode: 401, statusMessage: message })
+  }
 
-    const sessionId = authHeader.split(' ')[1]
-
-    const session = await prisma.userSession.findUnique({
-        where: {
-            id: sessionId
-        },
-        include: {
-            user: {
-                include: {
-                    sites: {
-                        include: {
-                            site: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-
-    console.log(session)
-
-
-
-    // const siteUsers = await prisma.siteUser.findMany({
-    //     where: {
-    //         userId: session?.user.id
-    //     }
-    // })
-    // const siteUsers = await prisma.siteUser.findMany()
-
-    // console.log(siteUsers)
-
-    // const newPassword = '8.M@gg1e.canopie'
-    // const passwordHash = await bcrypt.hash(newPassword, 10)
-    
-    // await prisma.user.update({
-    //     where: {
-    //         id: userId
-    //     },
-    //     data: {
-    //         password: passwordHash
-    //     }
-    // })
-
-    // return user
-    return session?.user.sites
+  return sites
 })

@@ -1,35 +1,42 @@
 <template>
-    <div>
-      <h1>Sites</h1>
-      <div class="sites grid gap-2 py-4">
-      <template v-for="site in sites">
-          <h2><a :href="`/sites/${site.site.id}`">{{ site.site.name }}</a></h2>
-        </template>
-      </div>
+  <div>
+    <RouteBack label="Back home" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <CardLink v-for="(module, index) in modules" :key="index" v-bind="module"> </CardLink>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  middleware: ["auth-admin"],
-});
+import { Button } from "~/components/ui/button";
+import { CardLink } from "~/components/ui/custom";
 
-const sessionId = useSessionKey();
+const sites = useSites();
 
-const { data: sites } = await useFetch('/api/sites/list', {
-  // headers: useRequestHeaders(['authorization'])
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${sessionId.value}`
-  },
-})
-
-onMounted(() => {
-  console.log(sites.value)
-})
-
+const modules = [
+  ...(sites.value?.length
+    ? [...(sites.value || []).map((site) => ({
+        title: site.name ?? "Untitled Site",
+        description: `Review or edit the ${site.name} site.`,
+        icon: "i-heroicons-map",
+        to: `/sites/${site.id}`,
+      })),
+      {
+        title: "Create a new project",
+        description: "Create a new project to manage your content and settings.",
+        icon: "i-heroicons-plus",
+        to: "/create/project",
+      },
+    ]
+    : [
+        {
+          title: "No projects found",
+          description: "You don't have any projects yet. Create one to get started.",
+          icon: "i-heroicons-map",
+          to: "/create/project",
+        },
+      ]),
+];
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style scoped></style>
