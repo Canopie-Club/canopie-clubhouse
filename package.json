@@ -31,7 +31,7 @@
     "@nuxt/image": "^1.8.0",
     "@nuxt/ui": "^2.18.4",
     "@nuxt/ui-pro": "^1.4.1",
-    "@nuxthub/core": "^0.8.14",
+    "@nuxthub/core": "^0.8.17",
     "@nuxtjs/i18n": "^8.5.1",
     "@nuxtjs/mdc": "^0.8.3",
     "@radix-icons/vue": "^1.0.0",
@@ -70,7 +70,7 @@
     "just-compare": "^2.3.0",
     "lucide-vue-next": "^0.441.0",
     "markdown-it": "^14.1.0",
-    "nuxt": "^3.15.3",
+    "nuxt": "^3.15.4",
     "papaparse": "^5.4.1",
     "pretty": "^2.0.0",
     "radix-vue": "^1.9.6",
@@ -79,6 +79,7 @@
     "tailwindcss": "^3.4.13",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.6.2",
+    "unenv": "^1.10.0",
     "uuid": "^10.0.0",
     "vee-validate": "^4.13.2",
     "vue": "^3.5.13",
@@ -104,7 +105,6 @@
     "fs-extra": "^11.2.0",
     "sass": "^1.77.8",
     "tsx": "^4.19.0",
-    "unenv": "^1.10.0",
     "wrangler": "^3.73.0"
   },
   "packageManager": "yarn@4.6.0"
