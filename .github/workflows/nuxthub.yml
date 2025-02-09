@@ -11,6 +11,10 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    env:
+      CANOPIE_GIT_PAT: ${{ secrets.CANOPIE_GIT_PAT }}
+      CLIENT_TOKEN: ${{ secrets.CLIENT_TOKEN }}
+      TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
