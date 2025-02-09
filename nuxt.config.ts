@@ -59,6 +59,10 @@ export default defineNuxtConfig({
       openAPI: true,
       tasks: true
     },
+
+    rollupConfig: {
+      external: ['papaparse']
+    }
   },
 
   hub: {
