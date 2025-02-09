@@ -27,6 +27,10 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
+          
+      - name: Configure Git to use GitHub token
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.CANOPIE_GIT_PAT }}@github.com/".insteadOf "https://github.com/"
 
       - name: Install dependencies
         run: yarn install
