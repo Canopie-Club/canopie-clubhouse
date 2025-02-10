@@ -1,8 +1,8 @@
 import { defineEventHandler } from 'h3'
-import { sendEmail } from '#common/server/utils/email'
-import dotenv from 'dotenv'
+// import { sendEmail } from '#common/server/utils/email'
+// import dotenv from 'dotenv'
 
-dotenv.config()
+// dotenv.config()
 
 export default defineEventHandler(async () => {
   //   return {
@@ -60,6 +60,6 @@ export default defineEventHandler(async () => {
         </body>
       </html>
     `
-
-  return await sendEmail('canopie.club@gmail.com', 'This is a test from the clubhouse!', body)
+    return body
+  // return await sendEmail('canopie.club@gmail.com', 'This is a test from the clubhouse!', body)
 })

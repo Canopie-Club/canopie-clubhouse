@@ -11,7 +11,7 @@
     "db:update": "tsx scripts/update-db.ts"
   },
   "dependencies": {
-    "@canopie-club/toolbox": "Canopie-Club/canopie-toolbox#master",
+    "@canopie-club/toolbox": "github:Canopie-Club/canopie-toolbox#master",
     "@editorjs/checklist": "^1.6.0",
     "@editorjs/editorjs": "^2.30.5",
     "@editorjs/embed": "^2.7.4",
