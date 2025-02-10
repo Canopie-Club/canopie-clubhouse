@@ -39,6 +39,13 @@ export const useNavigation = () => {
                         to: "/create/project",
                         comingSoon: true,
                     },
+                    {
+                        label: "Logout",
+                        icon: "i-heroicons-arrow-right-on-rectangle",
+                        function: () => {
+                            useLogout()()
+                        },
+                    },
                 ],
             },
         ];

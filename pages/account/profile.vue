@@ -29,7 +29,9 @@
       </CardContent>
     </Card>
 
-    <Button @click="() => (editProfile = !editProfile)">Edit Profile</Button>
+    <!-- TODO: Add edit profile functionality -->
+    <!-- <Button @click="() => (editProfile = !editProfile)">Edit Profile</Button> -->
+    <Button @click="logout">Logout</Button>
     
   </div>
 </template>
@@ -48,6 +50,10 @@ import {
 const user = useUser();
 
 const editProfile = ref(false);
+
+const logout = () => {
+  useLogout()()
+}
 </script>
 
 <style lang="scss" scoped>

@@ -15,9 +15,10 @@
         <div class="flex space-x-4">
           <slot name="left" />
         </div>
-        <Button variant="ghost" size="icon">
+        <!-- TODO: Add dark mode functionality -->
+        <!-- <Button variant="ghost" size="icon">
           <SunIcon class="h-5 w-5" />
-        </Button>
+        </Button> -->
       </div>
     </header>
   </div>

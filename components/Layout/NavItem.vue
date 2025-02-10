@@ -9,8 +9,14 @@
     }"
   >
     <NuxtLink
+      @click="item.function && item.function()"
       :to="item.comingSoon ? undefined : item.to"
-      :class="`size-${computedSize} ${hasChildren ? 'has-children' : ''}`"
+      :class="{
+        [`size-${computedSize}`]: true,
+        'has-children': hasChildren,
+        'coming-soon': item.comingSoon,
+        'functional': item.function,
+      }"
       class="nav-item-link w-full justify-start pb-2"
     >
       <span class="flex items-center w-full link">
@@ -99,6 +105,10 @@ const toggleItem = () => {
 
     .link:hover {
       @apply text-stone-900;
+    }
+
+    &.functional {
+      @apply cursor-pointer;
     }
   }
 

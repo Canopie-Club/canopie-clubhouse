@@ -11,6 +11,7 @@ export interface SiteLinkTree {
   badge?: string
   comingSoon?: boolean
   children?: SiteLinkTree[]
+  function?: () => void
 }
 
 const basicNav = (label: string, icon: string, to: string, description: string, extend?: Partial<SiteLinkTree>) => {
