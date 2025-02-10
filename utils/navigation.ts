@@ -54,6 +54,7 @@ export const childrenForSiteType = (site: SiteSummary): SiteLinkTree[] => {
       ]
     }),
     ...newsletter,
+    basicNav("Users", `${h}users`, `${s}/users`, "View/Edit your site’s users"),
     basicNav("Settings", `${h}cog`, `${s}/settings`, "View/Edit your settings", {
       comingSoon: true
     }),
