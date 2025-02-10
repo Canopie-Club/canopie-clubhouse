@@ -25,14 +25,14 @@ export default defineEventHandler(async event => {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const user = await createUser({name, email, password: hashedPassword, role: 'MEMBER'})
+  const user = await createUser({name, email, password: hashedPassword, role: 'MEMBER', terms_date: new Date()})
 
   try {
-    await sendEmail(
-      email,
-    'Welcome to the team!',
-      'You have been added to the team',
-    )
+    // await sendEmail(
+    //   email,
+    // 'Welcome to the team!',
+    //   'You have been added to the team',
+    // )
   } catch (error) {
     console.error(error)
     return {
