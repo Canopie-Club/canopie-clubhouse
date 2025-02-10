@@ -21,7 +21,7 @@ const modules = [
           title: "No sites found",
           description: "You don't have any sites yet. Create one to get started.",
           icon: "i-heroicons-map",
-          to: "/create/site",
+          to: "/create/project",
         },
       ]),
   {
